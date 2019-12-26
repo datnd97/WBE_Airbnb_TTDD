@@ -41,7 +41,7 @@ public class HomeController {
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);
     }
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
         Optional<Home> currentHome = homeService.findById(id);
         if(!currentHome.isPresent()) {
@@ -58,7 +58,7 @@ public class HomeController {
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
     }
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);
         if(home.isPresent()) {

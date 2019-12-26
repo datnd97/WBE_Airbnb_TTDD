@@ -30,6 +30,9 @@ public class Home {
     @ManyToOne
     private TypeRoom typeRoom;
 
+    @ManyToOne
+    private Status status;
+
     @Lob
     private String description;
 

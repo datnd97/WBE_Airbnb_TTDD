@@ -21,29 +21,31 @@ public class HomeController {
     @GetMapping
     public ResponseEntity<?> listHome() {
         List<Home> homes = (List<Home>) homeService.findAll();
-        if(homes.isEmpty()) {
+        if (homes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(homes,HttpStatus.OK);
+        return new ResponseEntity<>(homes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
-            return new ResponseEntity<>(home,HttpStatus.OK);
+        if (home.isPresent()) {
+            return new ResponseEntity<>(home, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @PostMapping
     public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
         homeService.save(home);
-        return new ResponseEntity<>(home,HttpStatus.CREATED);
+        return new ResponseEntity<>(home, HttpStatus.CREATED);
     }
-    @PutMapping("{/id}")
-    public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateHome(@PathVariable Long id, @RequestBody Home home) {
         Optional<Home> currentHome = homeService.findById(id);
-        if(!currentHome.isPresent()) {
+        if (!currentHome.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentHome.get().setName(home.getName());
@@ -52,15 +54,16 @@ public class HomeController {
         currentHome.get().setBedroom(home.getBedroom());
         currentHome.get().setDescription(home.getDescription());
         currentHome.get().setPrice(home.getPrice());
-//        currentHome.get().setTypeHome(home.getTypeHome());
-//        currentHome.get().setTypeRoom(home.getTypeRoom());
+        currentHome.get().setTypeHome(home.getTypeHome());
+        currentHome.get().setTypeRoom(home.getTypeRoom());
         homeService.save(currentHome.get());
-        return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
+        return new ResponseEntity<>(currentHome.get(), HttpStatus.CREATED);
     }
-    @DeleteMapping("{/id}")
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
+        if (home.isPresent()) {
             homeService.delete(id);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -1,6 +1,9 @@
 package com.security.demospringsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "home")
@@ -26,12 +29,11 @@ public class Home {
 
     @ManyToOne
     private TypeHome typeHome;
-//
+
+
     @ManyToOne
     private TypeRoom typeRoom;
 
-    @ManyToOne
-    private Status status;
 
     @Lob
     private String description;
@@ -92,13 +94,6 @@ public class Home {
         this.typeHome = typeHome;
     }
 
-    public TypeRoom getTypeRoom() {
-        return typeRoom;
-    }
-
-    public void setTypeRoom(TypeRoom typeRoom) {
-        this.typeRoom = typeRoom;
-    }
 
     public String getDescription() {
         return description;
@@ -114,6 +109,14 @@ public class Home {
 
     public void setBathroom(Integer bathroom) {
         this.bathroom = bathroom;
+    }
+
+    public TypeRoom getTypeRoom() {
+        return typeRoom;
+    }
+
+    public void setTypeRoom(TypeRoom typeRoom) {
+        this.typeRoom = typeRoom;
     }
 
     public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description) {

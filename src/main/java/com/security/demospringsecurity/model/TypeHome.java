@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "type_home")
+@Table(name = "typeHome")
 public class TypeHome {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +16,7 @@ public class TypeHome {
     private String name;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Home.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
     private List<Home> homes;
 
     public TypeHome() {

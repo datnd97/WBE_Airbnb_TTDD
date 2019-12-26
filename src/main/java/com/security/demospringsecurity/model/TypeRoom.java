@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "type_room")
+@Table(name = "typeRoom")
 public class TypeRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,8 @@ public class TypeRoom {
     private String name;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Home.class,cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
     private List<Home> homes;
-
     public Long getId() {
         return id;
     }
@@ -35,6 +34,11 @@ public class TypeRoom {
         this.name = name;
     }
 
+
+
+    public TypeRoom() {
+    }
+
     public List<Home> getHomes() {
         return homes;
     }
@@ -43,11 +47,15 @@ public class TypeRoom {
         this.homes = homes;
     }
 
-    public TypeRoom() {
+    public TypeRoom(String name, List<Home> homes) {
+        this.name = name;
+        this.homes = homes;
     }
-
 
     public TypeRoom(String name) {
         this.name = name;
     }
+
+
+
 }

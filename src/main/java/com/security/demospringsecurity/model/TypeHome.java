@@ -17,7 +17,6 @@ public class TypeHome {
 
     @JsonIgnore
     @OneToMany(targetEntity = Home.class,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-
     private List<Home> homes;
 
     public TypeHome() {

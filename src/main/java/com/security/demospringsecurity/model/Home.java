@@ -27,8 +27,8 @@ public class Home {
     @ManyToOne
     private TypeHome typeHome;
 //
-//    @ManyToOne
-//    private TypeRoom typeRoom;
+    @ManyToOne
+    private TypeRoom typeRoom;
 
     @Lob
     private String description;
@@ -89,13 +89,13 @@ public class Home {
         this.typeHome = typeHome;
     }
 
-//    public TypeRoom getTypeRoom() {
-//        return typeRoom;
-//    }
-//
-//    public void setTypeRoom(TypeRoom typeRoom) {
-//        this.typeRoom = typeRoom;
-//    }
+    public TypeRoom getTypeRoom() {
+        return typeRoom;
+    }
+
+    public void setTypeRoom(TypeRoom typeRoom) {
+        this.typeRoom = typeRoom;
+    }
 
     public String getDescription() {
         return description;
@@ -113,14 +113,17 @@ public class Home {
         this.bathroom = bathroom;
     }
 
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, String description) {
+    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description) {
         this.name = name;
         this.address = address;
         this.bedroom = bedroom;
         this.bathroom = bathroom;
         this.price = price;
+        this.typeHome = typeHome;
+        this.typeRoom = typeRoom;
         this.description = description;
     }
+
     public Home() {
     }
 }

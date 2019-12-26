@@ -3,6 +3,7 @@ package com.security.demospringsecurity.config;
 
 import com.security.demospringsecurity.security.jwt.JwtAuthTokenFilter;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -41,7 +42,6 @@ import java.util.Properties;
 //@EnableJpaRepositories("com.security.demospringsecurity.repository")
 //@EnableSpringDataWebSupport
 public class AppConfig implements WebMvcConfigurer {
-
 
 
 

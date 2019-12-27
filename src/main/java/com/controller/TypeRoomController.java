@@ -1,7 +1,7 @@
-package com.security.demospringsecurity.controller;
+package com.controller;
 
-import com.security.demospringsecurity.model.TypeRoom;
-import com.security.demospringsecurity.service.TypeRoomService;
+import com.model.TypeRoom;
+import com.service.TypeRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

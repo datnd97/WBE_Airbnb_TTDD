@@ -16,8 +16,8 @@ public class TypeRoom {
 
     @Lob
     private String name;
-
-    @OneToMany(mappedBy = "typeRoom", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "typeRoom", cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Home> homes;
 
 }

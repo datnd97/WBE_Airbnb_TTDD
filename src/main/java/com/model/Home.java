@@ -1,8 +1,7 @@
 package com.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -40,11 +39,10 @@ public class Home {
 
     @Lob
     private String description;
-
-    @Lob
+    @JsonProperty
     private boolean status;
 
-    @OneToMany(mappedBy = "home")
+    @OneToMany(mappedBy = "home", fetch = FetchType.LAZY)
     private List<Image> images;
 
 }

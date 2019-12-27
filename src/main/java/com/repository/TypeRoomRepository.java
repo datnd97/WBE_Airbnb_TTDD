@@ -1,9 +1,7 @@
-package com.security.demospringsecurity.repository;
+package com.repository;
 
-import com.security.demospringsecurity.model.TypeRoom;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
+import com.model.TypeRoom;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface TypeRoomRepository extends PagingAndSortingRepository<TypeRoom,Long> {
+public interface TypeRoomRepository extends JpaRepository<TypeRoom, Long> {
 }

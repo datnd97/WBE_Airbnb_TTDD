@@ -1,6 +1,7 @@
-package com.security.demospringsecurity.service;
+package com.service;
 
-import com.security.demospringsecurity.model.TypeRoom;
+import com.model.TypeRoom;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -10,3 +11,4 @@ public interface TypeRoomService {
     TypeRoom save(TypeRoom typeRoom);
     void delete(Long id);
 }
+

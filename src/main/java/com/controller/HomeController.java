@@ -55,18 +55,11 @@ public class HomeController {
         currentHome.get().setDescription(home.getDescription());
         currentHome.get().setPrice(home.getPrice());
         currentHome.get().setTypeHome(home.getTypeHome());
-<<<<<<< HEAD:src/main/java/com/controller/HomeController.java
+
         currentHome.get().setTypeRoom(home.getTypeRoom());
-=======
-//        currentHome.get().setTypeRoom(home.getTypeRoom());
->>>>>>> d017d9de1a66d974490060b93214ef39c1c6154b:src/main/java/com/security/demospringsecurity/controller/HomeController.java
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(), HttpStatus.CREATED);
     }
-<<<<<<< HEAD:src/main/java/com/controller/HomeController.java
-
-=======
->>>>>>> d017d9de1a66d974490060b93214ef39c1c6154b:src/main/java/com/security/demospringsecurity/controller/HomeController.java
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);

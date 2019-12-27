@@ -1,16 +1,17 @@
-package com.service.impl;
+package com.security.demospringsecurity.service.impl;
 
-import com.model.TypeRoom;
-import com.repository.TypeRoomRepository;
-import com.service.TypeRoomService;
+import com.security.demospringsecurity.model.TypeRoom;
+import com.security.demospringsecurity.repository.TypeRoomRepository;
+import com.security.demospringsecurity.service.TypeRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
-public class TypeRoomServiceImpl implements TypeRoomService {
+public class TypeRoomServiceImpl  implements TypeRoomService {
     @Autowired
-    TypeRoomRepository typeRoomRepository;
+    private TypeRoomRepository typeRoomRepository;
     @Override
     public Iterable<TypeRoom> findAll() {
         return typeRoomRepository.findAll();
@@ -22,8 +23,8 @@ public class TypeRoomServiceImpl implements TypeRoomService {
     }
 
     @Override
-    public TypeRoom save(TypeRoom typeRoom) {
-        return typeRoomRepository.save(typeRoom);
+    public TypeRoom save(TypeRoom typeHome) {
+        return typeRoomRepository.save(typeHome);
     }
 
     @Override

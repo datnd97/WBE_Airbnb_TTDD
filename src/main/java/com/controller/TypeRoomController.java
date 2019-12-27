@@ -1,7 +1,7 @@
-package com.controller;
+package com.security.demospringsecurity.controller;
 
-import com.model.TypeRoom;
-import com.service.TypeRoomService;
+import com.security.demospringsecurity.model.TypeRoom;
+import com.security.demospringsecurity.service.TypeRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/auth/type-home")
+@RequestMapping("/api/auth/type-room")
 public class TypeRoomController {
     @Autowired
     private TypeRoomService typeRoomService;
@@ -24,9 +24,8 @@ public class TypeRoomController {
         if(type.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(type,HttpStatus.OK);
+        return new ResponseEntity<>(type, HttpStatus.OK);
     }
-
     @GetMapping("/{id}")
     public ResponseEntity<?> getType(@PathVariable Long id) {
         Optional<TypeRoom> home = typeRoomService.findById(id);

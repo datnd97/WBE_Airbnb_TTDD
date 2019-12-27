@@ -1,6 +1,6 @@
-package com.service;
+package com.security.demospringsecurity.service;
 
-import com.model.TypeRoom;
+import com.security.demospringsecurity.model.TypeRoom;
 
 import java.util.Optional;
 

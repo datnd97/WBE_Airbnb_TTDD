@@ -31,28 +31,7 @@ public class Home {
     private TypeHome typeHome;
 
 
-    @Lob
-    private String image;
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, String image, TypeRoom typeRoom, String description) {
-        this.name = name;
-        this.address = address;
-        this.bedroom = bedroom;
-        this.bathroom = bathroom;
-        this.price = price;
-        this.typeHome = typeHome;
-        this.image = image;
-        this.typeRoom = typeRoom;
-        this.description = description;
-    }
 
     @ManyToOne
     private TypeRoom typeRoom;

@@ -54,7 +54,7 @@ public class HomeController {
         currentHome.get().setDescription(home.getDescription());
         currentHome.get().setPrice(home.getPrice());
         currentHome.get().setTypeHome(home.getTypeHome());
-//        currentHome.get().setTypeRoom(home.getTypeRoom());
+        currentHome.get().setTypeRoom(home.getTypeRoom());
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
     }

@@ -40,6 +40,30 @@ public class Home {
     @Lob
     private String description;
 
+
+    @Lob
+    private Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status) {
+        this.name = name;
+        this.address = address;
+        this.bedroom = bedroom;
+        this.bathroom = bathroom;
+        this.price = price;
+        this.typeHome = typeHome;
+        this.typeRoom = typeRoom;
+        this.description = description;
+        this.status = status;
+    }
+
     public Long getId() {
         return id;
     }
@@ -121,16 +145,7 @@ public class Home {
         this.typeRoom = typeRoom;
     }
 
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description) {
-        this.name = name;
-        this.address = address;
-        this.bedroom = bedroom;
-        this.bathroom = bathroom;
-        this.price = price;
-        this.typeHome = typeHome;
-        this.typeRoom = typeRoom;
-        this.description = description;
-    }
+
 
     public Home() {
     }

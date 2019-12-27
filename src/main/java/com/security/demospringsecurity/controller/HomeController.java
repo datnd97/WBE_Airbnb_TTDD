@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.controller;
 
+import com.security.demospringsecurity.message.request.StatusForm;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,15 @@ public class HomeController {
         currentHome.get().setTypeRoom(home.getTypeRoom());
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
+    }
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id,@RequestBody StatusForm status) {
+        Optional<Home> current = homeService.findById(id);
+        if(!current.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        current.get().setStatus(status.getStatus());
+        return new ResponseEntity<>(current.get(),HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {

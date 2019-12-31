@@ -9,4 +9,5 @@ public interface HomeService {
     Optional<Home> findById(Long id);
     Home save(Home home);
     void delete(Long id);
+    Iterable<Home> findAllByName(String name);
 }

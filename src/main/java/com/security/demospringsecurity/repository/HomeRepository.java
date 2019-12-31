@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HomeRepository extends PagingAndSortingRepository<Home,Long> {
+    Iterable<Home> findAllByName(String name);
 }

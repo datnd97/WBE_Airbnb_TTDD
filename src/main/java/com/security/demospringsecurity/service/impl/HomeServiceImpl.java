@@ -31,4 +31,9 @@ public class HomeServiceImpl implements HomeService {
     public void delete(Long id) {
         homeRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Home> findAllByName(String name) {
+        return homeRepository.findAllByName(name);
+    }
 }

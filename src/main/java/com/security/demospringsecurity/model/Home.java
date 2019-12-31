@@ -11,28 +11,18 @@ public class Home {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Lob
     private String name;
-
     @Lob
     private String address;
-
     @Lob
     private Integer bedroom;
-
     @Lob
     private Integer bathroom;
-
     @Lob
     private Double price;
-
     @ManyToOne
     private TypeHome typeHome;
-
-
-
-
     @ManyToOne
     private TypeRoom typeRoom;
 

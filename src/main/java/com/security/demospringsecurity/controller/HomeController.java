@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.controller;
 
+import com.security.demospringsecurity.message.request.SearchHomeByNameForm;
 import com.security.demospringsecurity.message.request.StatusForm;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.service.HomeService;
@@ -56,6 +57,7 @@ public class HomeController {
         currentHome.get().setPrice(home.getPrice());
         currentHome.get().setTypeHome(home.getTypeHome());
         currentHome.get().setTypeRoom(home.getTypeRoom());
+        currentHome.get().setStatus(home.getStatus());
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
     }
@@ -76,4 +78,29 @@ public class HomeController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @PostMapping("/search-by-name")
+    public ResponseEntity<?> searchHomeName(@RequestBody SearchHomeByNameForm form) {
+        if(form.getName().equals("") || form.getName() == null) {
+            List<Home> homes = (List<Home>) homeService.findAll();
+            if(homes.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            else {
+                return new ResponseEntity<>(homes, HttpStatus.OK);
+            }
+        }
+        else {
+            List<Home> homes = (List<Home>) homeService.findAllByName(form.getName());
+            if(homes.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            else {
+                return new ResponseEntity<>(homes,HttpStatus.OK);
+            }
+        }
+
+    }
+
+
+
 }

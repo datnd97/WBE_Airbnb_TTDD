@@ -1,6 +1,7 @@
 package com.security.demospringsecurity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.catalina.Store;
 import org.jboss.logging.Field;
 

@@ -6,7 +6,9 @@ import org.apache.catalina.Store;
 import org.jboss.logging.Field;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "home")
@@ -37,6 +39,19 @@ public class Home {
 
     @Lob
     private Boolean status;
+
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "homeSet",fetch = FetchType.EAGER)
+    private Set<Booking> bookings;
+
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
     public Boolean getStatus() {
         return status;

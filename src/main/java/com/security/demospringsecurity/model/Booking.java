@@ -47,21 +47,22 @@ public class Booking {
     }
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "booking_hotel",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "home_id")
-    )
-    private Set<Home> homes = new HashSet<>();
-
-    public Set<Home> getHomes() {
-        return homes;
-    }
-
-    public void setHomes(Set<Home> homes) {
-        this.homes = homes;
-    }
+   @ManyToMany(targetEntity = Home.class, fetch = FetchType.EAGER)
+   @JoinTable(
+           name = "project_booking",
+           joinColumns = @JoinColumn(name = "booking_id"),
+           inverseJoinColumns = @JoinColumn(name = "home_id")
+   )
+   private Set<Home> homeSet;
 
     public Booking() {
+    }
+
+    public Set<Home> getHomeSet() {
+        return homeSet;
+    }
+
+    public void setHomeSet(Set<Home> homeSet) {
+        this.homeSet = homeSet;
     }
 }

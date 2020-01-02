@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.1.5.BUILD-SNAPSHOT'
 	id 'java'
 	id 'war'
+
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -14,6 +15,7 @@ repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/snapshot' }
 	maven { url 'https://repo.spring.io/milestone' }
+
 }
 
 dependencies {
@@ -29,7 +31,7 @@ dependencies {
 // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
 
-
+// https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations
 //	compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.9.RELEASE'
 //	compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.9.RELEASE'
 //	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'

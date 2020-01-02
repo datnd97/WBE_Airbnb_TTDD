@@ -1,12 +1,15 @@
 package com.security.demospringsecurity.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.Store;
+import org.jboss.logging.Field;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "home")
+
 public class Home {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

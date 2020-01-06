@@ -47,7 +47,7 @@ public class Booking {
     }
 
 
-   @ManyToMany(targetEntity = Home.class, fetch = FetchType.EAGER)
+   @ManyToMany
    @JoinTable(
            name = "project_booking",
            joinColumns = @JoinColumn(name = "booking_id"),

@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth/image")
 public class UploadFileController {
@@ -25,13 +26,26 @@ public class UploadFileController {
     @PostMapping("/upload")
     public String uploadMultipartFile(@RequestParam("file") MultipartFile file) {
         try {
+            // save file to PostgreSQL
             FileModel filemode = new FileModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
             fileRepository.save(filemode);
-            return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
+            return ("File uploaded successfully! -> filename = " + file.getOriginalFilename());
         } catch (  Exception e) {
             return "FAIL! Maybe You had uploaded the file before or the file's size > 500KB";
         }
+
     }
+
+//    public String saveImage(MultipartFile file) {
+//        try {
+//            // save file to PostgreSQL
+//            FileModel filemode = new FileModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+//            fileRepository.save(filemode);
+//            return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
+//        } catch (  Exception e) {
+//            return "FAIL! Maybe You had uploaded the file before or the file's size > 500KB";
+//        }
+//    }
     /*
      * List All Files
      */

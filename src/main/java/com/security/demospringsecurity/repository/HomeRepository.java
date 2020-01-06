@@ -13,6 +13,6 @@ public interface HomeRepository extends PagingAndSortingRepository<Home,Long> {
 //    @Query(value = "from Booking t where yourDate BETWEEN :startDate AND :endDate")
 //    public List<EntityClassTable> getAllBetweenDates(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
 
-    Iterable<Home> findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(Date endDate, Date startDate);
+//    Iterable<Home> findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(Date endDate, Date startDate);
 
 }

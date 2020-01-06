@@ -13,6 +13,6 @@ public interface HomeService {
     void delete(Long id);
     Iterable<Home> findAllByName(String name);
 
-    @Select({"select", SELECT_FIELDS, "from", TABLE_NAEM, "where id=#{id}"})
-    Article selectById(int id);
+//    @Select({"select", SELECT_FIELDS, "from", TABLE_NAEM, "where id=#{id}"})
+//    Article selectById(int id);
 }

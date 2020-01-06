@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/auth/image")
 public class UploadFileController {
@@ -25,7 +25,6 @@ public class UploadFileController {
     @PostMapping("/upload")
     public String uploadMultipartFile(@RequestParam("file") MultipartFile file) {
         try {
-            // save file to PostgreSQL
             FileModel filemode = new FileModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
             fileRepository.save(filemode);
             return "File uploaded successfully! -> filename = " + file.getOriginalFilename();
@@ -42,9 +41,6 @@ public class UploadFileController {
         return fileRepository.findAll();
     }
 
-    /*
-     * Download Files
-     */
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
         Optional<FileModel> fileOptional = fileRepository.findById(id);

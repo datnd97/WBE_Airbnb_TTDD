@@ -1,11 +1,6 @@
 package com.security.demospringsecurity.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -29,6 +24,24 @@ public class Image {
     @Lob
     @Column(name="pic")
     private byte[] pic;
+
+    @ManyToOne
+    private Home home;
+
+    public Home getHome() {
+        return home;
+    }
+
+    public void setHome(Home home) {
+        this.home = home;
+    }
+
+    public Image(String name, String mimetype, byte[] pic, Home home) {
+        this.name = name;
+        this.mimetype = mimetype;
+        this.pic = pic;
+        this.home = home;
+    }
 
     public Image() {
     }

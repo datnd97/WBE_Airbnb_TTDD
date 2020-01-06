@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 
 @Entity
-@Table(name = "file_model")
-public class FileModel {
+@Table(name = "image")
+public class Image {
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -30,9 +30,10 @@ public class FileModel {
     @Column(name="pic")
     private byte[] pic;
 
-    public FileModel(){}
+    public Image() {
+    }
 
-    public FileModel(String name, String mimetype, byte[] pic){
+    public Image(String name, String mimetype, byte[] pic) {
         this.name = name;
         this.mimetype = mimetype;
         this.pic = pic;

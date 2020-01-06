@@ -41,6 +41,13 @@ public class Home {
     private Boolean status;
 
 
+//    @JsonIgnore
+//    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
+//    private List<Home> homes;
+
+//   @JsonIgnore
+//   @OneToMany(targetEntity = )
+
     @JsonIgnore
     @ManyToMany(mappedBy = "homeSet",fetch = FetchType.EAGER)
     private Set<Booking> bookings;

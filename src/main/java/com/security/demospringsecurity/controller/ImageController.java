@@ -1,9 +1,11 @@
 package com.security.demospringsecurity.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.security.demospringsecurity.model.FileModel;
+
+import com.security.demospringsecurity.model.Image;
 import com.security.demospringsecurity.model.View;
-import com.security.demospringsecurity.repository.FileRepository;
+
+import com.security.demospringsecurity.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,9 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/auth/image")
-public class UploadFileController {
+public class ImageController {
     @Autowired
-    FileRepository fileRepository;
+    ImageRepository fileRepository;
     /*
      * MultipartFile Upload
      */
@@ -27,7 +29,7 @@ public class UploadFileController {
     public String uploadMultipartFile(@RequestParam("file") MultipartFile file) {
         try {
             // save file to PostgreSQL
-            FileModel filemode = new FileModel(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+            Image filemode = new Image(file.getOriginalFilename(), file.getContentType(), file.getBytes());
             fileRepository.save(filemode);
             return ("File uploaded successfully! -> filename = " + file.getOriginalFilename());
         } catch (  Exception e) {
@@ -51,16 +53,16 @@ public class UploadFileController {
      */
     @JsonView(View.FileInfo.class)
     @GetMapping("/all")
-    public List<FileModel> getListFiles() {
+    public List<Image> getListFiles() {
         return fileRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<byte[]> getFile(@PathVariable Long id) {
-        Optional<FileModel> fileOptional = fileRepository.findById(id);
+        Optional<Image> fileOptional = fileRepository.findById(id);
 
         if(fileOptional.isPresent()) {
-            FileModel file = fileOptional.get();
+            Image file = fileOptional.get();
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getName() + "\"")
                     .body(file.getPic());

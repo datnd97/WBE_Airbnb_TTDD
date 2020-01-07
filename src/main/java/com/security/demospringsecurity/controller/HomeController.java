@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,10 +42,10 @@ public class HomeController {
     }
     @PostMapping
     public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
-        
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
         Optional<Home> currentHome = homeService.findById(id);

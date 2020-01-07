@@ -43,6 +43,16 @@ public class Home {
     @Lob
     private Boolean status;
 
+    private List<Image> photos;
+
+    public List<Image> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Image> photos) {
+        this.photos = photos;
+    }
+
 
 
     @JsonIgnore

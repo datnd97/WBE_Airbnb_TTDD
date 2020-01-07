@@ -26,7 +26,6 @@ public class FileModel {
     @Column(name = "mimetype")
     private String mimetype;
 
-    @Lob
     @Column(name="pic")
     private byte[] pic;
 

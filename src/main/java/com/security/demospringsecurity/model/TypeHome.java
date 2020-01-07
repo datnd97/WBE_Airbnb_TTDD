@@ -11,10 +11,7 @@ public class TypeHome {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Lob
     private String name;
-
     @JsonIgnore
     @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
     private List<Home> homes;

@@ -6,7 +6,9 @@ import org.apache.catalina.Store;
 import org.jboss.logging.Field;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "home")
@@ -15,48 +17,27 @@ public class Home {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Lob
+
     private String name;
-    @Lob
+
     private String address;
-    @Lob
+
     private Integer bedroom;
-    @Lob
+
     private Integer bathroom;
-    @Lob
+
     private Double price;
     @ManyToOne
     private TypeHome typeHome;
     @ManyToOne
     private TypeRoom typeRoom;
 
-
-    @Lob
     private String description;
 
-
-    @Lob
     private Boolean status;
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status) {
-        this.name = name;
-        this.address = address;
-        this.bedroom = bedroom;
-        this.bathroom = bathroom;
-        this.price = price;
-        this.typeHome = typeHome;
-        this.typeRoom = typeRoom;
-        this.description = description;
-        this.status = status;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "home")
+    private Set<Booking> bookings = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -82,19 +63,19 @@ public class Home {
         this.address = address;
     }
 
-    public int getBedroom() {
+    public Integer getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(int bedroom) {
+    public void setBedroom(Integer bedroom) {
         this.bedroom = bedroom;
     }
 
-    public int getBathroom() {
+    public Integer getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(int bathroom) {
+    public void setBathroom(Integer bathroom) {
         this.bathroom = bathroom;
     }
 
@@ -114,6 +95,13 @@ public class Home {
         this.typeHome = typeHome;
     }
 
+    public TypeRoom getTypeRoom() {
+        return typeRoom;
+    }
+
+    public void setTypeRoom(TypeRoom typeRoom) {
+        this.typeRoom = typeRoom;
+    }
 
     public String getDescription() {
         return description;
@@ -123,24 +111,41 @@ public class Home {
         this.description = description;
     }
 
-    public void setBedroom(Integer bedroom) {
-        this.bedroom = bedroom;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setBathroom(Integer bathroom) {
-        this.bathroom = bathroom;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
-    public TypeRoom getTypeRoom() {
-        return typeRoom;
+    public Set<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setTypeRoom(TypeRoom typeRoom) {
-        this.typeRoom = typeRoom;
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
     }
-
-
 
     public Home() {
     }
+
+    @Override
+    public String toString() {
+        return "Home{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", bedroom=" + bedroom +
+                ", bathroom=" + bathroom +
+                ", price=" + price +
+                ", typeHome=" + typeHome +
+                ", typeRoom=" + typeRoom +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", bookings=" + bookings +
+                '}';
+    }
+    public Home(String name, String address, Integer bedroom, Integer bathroom,
+                double price, TypeHome typeHome, TypeRoom typeRoom, String description, boolean status){};
 }

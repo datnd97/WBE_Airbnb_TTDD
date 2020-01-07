@@ -40,27 +40,27 @@ public class Booking {
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
     }
-    public Booking(Date begin_date, Date end_date) {
+    public Booking(User user, Home home,Date begin_date, Date end_date) {
+        this.user = user;
+        this.home = home;
         this.begin_date = begin_date;
         this.end_date = end_date;
 
     }
+    @ManyToOne
+    @JoinColumn(name = "home_id")
+    private Home home;
 
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "booking_hotel",
-            joinColumns = @JoinColumn(name = "booking_id"),
-            inverseJoinColumns = @JoinColumn(name = "home_id")
-    )
-    private Set<Home> homes = new HashSet<>();
-
-    public Set<Home> getHomes() {
-        return homes;
+    public Home getHome() {
+        return home;
     }
 
-    public void setHomes(Set<Home> homes) {
-        this.homes = homes;
+    public void setHome(Home home) {
+        this.home = home;
     }
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Booking() {
     }

@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -38,10 +39,12 @@ public class User{
     @Email
     private String email;
 
+    @JsonIgnore
     @NotBlank
     @Size(min=6, max = 100)
     private String password;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -50,12 +53,21 @@ public class User{
 
     public User() {}
 
+    public User(String name, String username, String email, String password, Set<Role> roles) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
     public User(String name, String username, String email, String password) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
     }
+
+
 
     public Long getId() {
         return id;

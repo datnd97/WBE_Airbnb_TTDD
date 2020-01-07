@@ -40,7 +40,7 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping
-    public ResponseEntity<?> createHome(@Valid @RequestBody Home home, @RequestParam(value = "files") MultipartFile files) {
+    public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
         
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);
@@ -63,6 +63,7 @@ public class HomeController {
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id,@RequestBody StatusForm status) {
         Optional<Home> current = homeService.findById(id);

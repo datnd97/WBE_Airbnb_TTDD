@@ -17,12 +17,13 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/auth/image")
 public class ImageControllerPlus {
     @Autowired
     private ImageService imageService;
 
-    @PostMapping
+
+    @PostMapping("/upload")
     public String createFileUpload(@RequestParam("file") MultipartFile file){
         try {
             Image filemode = new Image(
@@ -51,7 +52,7 @@ public class ImageControllerPlus {
         return ResponseEntity.status(404).body(null);
     }
     @JsonView(View.FileInfo.class)
-    @GetMapping
+    @GetMapping("/all")
     public Iterable<Image> getListFiles() {
         return imageService.findAll();
     }

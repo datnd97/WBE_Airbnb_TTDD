@@ -26,6 +26,7 @@ public class Image {
     private byte[] pic;
 
     @ManyToOne
+    @JoinColumn(name = "home_id")
     private Home home;
 
     public Home getHome() {

@@ -41,9 +41,6 @@ public class Home {
     private Boolean status;
 
 
-//    @JsonIgnore
-//    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
-//    private List<Home> homes;
 
     @JsonIgnore
     @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)

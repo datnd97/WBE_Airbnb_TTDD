@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,7 +40,8 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping
-    public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
+    public ResponseEntity<?> createHome(@Valid @RequestBody Home home, @RequestParam(value = "files") MultipartFile files) {
+        
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);
     }

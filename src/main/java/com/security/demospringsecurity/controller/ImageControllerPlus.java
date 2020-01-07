@@ -1,10 +1,8 @@
 package com.security.demospringsecurity.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.Image;
 import com.security.demospringsecurity.model.View;
-import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.ImageService;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,32 +17,24 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/auth/image")
+@RequestMapping("/files")
 public class ImageControllerPlus {
-    @Autowired
-    private HomeService homeService;
-
     @Autowired
     private ImageService imageService;
 
-
-    @PostMapping("/upload/{id}")
-    public String createFileUpload(@RequestParam("file") MultipartFile file,@PathVariable Long id){
-        Optional<Home> home = homeService.findById(id);
+    @PostMapping
+    public String createFileUpload(@RequestParam("file") MultipartFile file){
         try {
             Image filemode = new Image(
                     file.getOriginalFilename(),
                     file.getContentType(),
                     file.getBytes()
             );
-//            filemode.setHome(home.get());
             imageService.save(filemode);
-
             return ("File uploaded successfully! -> filename = " + file.getOriginalFilename());
         } catch (  Exception e) {
             return "FAIL! Maybe You had uploaded the file before or the file's size > 500KB";
         }
-
     }
 
     @GetMapping("/{id}")
@@ -61,7 +51,7 @@ public class ImageControllerPlus {
         return ResponseEntity.status(404).body(null);
     }
     @JsonView(View.FileInfo.class)
-    @GetMapping("/all")
+    @GetMapping
     public Iterable<Image> getListFiles() {
         return imageService.findAll();
     }

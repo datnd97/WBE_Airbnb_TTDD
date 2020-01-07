@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +40,11 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping
-    public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
+    public ResponseEntity<?> createHome(@Valid @RequestBody Home home, @RequestParam(value = "files") MultipartFile files) {
+        
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
         Optional<Home> currentHome = homeService.findById(id);
@@ -64,7 +63,6 @@ public class HomeController {
         homeService.save(currentHome.get());
         return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
     }
-
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id,@RequestBody StatusForm status) {
         Optional<Home> current = homeService.findById(id);

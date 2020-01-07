@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.catalina.Store;
 import org.jboss.logging.Field;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -32,8 +31,6 @@ public class Home {
     private TypeHome typeHome;
     @ManyToOne
     private TypeRoom typeRoom;
-
-
 
 
     @Lob

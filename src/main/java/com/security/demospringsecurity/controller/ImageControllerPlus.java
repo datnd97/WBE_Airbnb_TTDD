@@ -1,8 +1,10 @@
 package com.security.demospringsecurity.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.Image;
 import com.security.demospringsecurity.model.View;
+import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.ImageService;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +19,22 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/auth/images")
 public class ImageControllerPlus {
     @Autowired
     private ImageService imageService;
-
-    @PostMapping
-    public String createFileUpload(@RequestParam("file") MultipartFile file){
+    @Autowired
+    private HomeService homeService;
+    @PostMapping("/upload")
+    public String createFileUpload(@RequestParam("file") MultipartFile file,@PathVariable Long id){
+        Optional<Home> home = homeService.findById(id);
         try {
             Image filemode = new Image(
                     file.getOriginalFilename(),
                     file.getContentType(),
                     file.getBytes()
             );
+            filemode.setHome(home.get());
             imageService.save(filemode);
             return ("File uploaded successfully! -> filename = " + file.getOriginalFilename());
         } catch (  Exception e) {

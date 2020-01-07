@@ -40,7 +40,7 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     @PostMapping
-    public ResponseEntity<?> createHome(@Valid @RequestBody Home home, @RequestParam(value = "files") MultipartFile files) {
+    public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
         
         homeService.save(home);
         return new ResponseEntity<>(home,HttpStatus.CREATED);

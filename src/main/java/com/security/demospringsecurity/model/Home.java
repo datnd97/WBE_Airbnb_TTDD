@@ -36,8 +36,6 @@ public class Home {
     @Lob
     private String description;
 
-
-    @Lob
     private Boolean status;
 
 //    private List<Image> photos;
@@ -52,31 +50,31 @@ public class Home {
 
 
 
-    @JsonIgnore
-    @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)
-    private List<Image> images;
+//    @JsonIgnore
+//    @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)
+//    private List<Image> images;
 
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status, List<Image> images, Set<Booking> bookings) {
-        this.name = name;
-        this.address = address;
-        this.bedroom = bedroom;
-        this.bathroom = bathroom;
-        this.price = price;
-        this.typeHome = typeHome;
-        this.typeRoom = typeRoom;
-        this.description = description;
-        this.status = status;
-        this.images = images;
-        this.bookings = bookings;
-    }
+//    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status, List<Image> images, Set<Booking> bookings) {
+//        this.name = name;
+//        this.address = address;
+//        this.bedroom = bedroom;
+//        this.bathroom = bathroom;
+//        this.price = price;
+//        this.typeHome = typeHome;
+//        this.typeRoom = typeRoom;
+//        this.description = description;
+//        this.status = status;
+//        this.images = images;
+//        this.bookings = bookings;
+//    }
 
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
+//    public List<Image> getImages() {
+//        return images;
+//    }
+//
+//    public void setImages(List<Image> images) {
+//        this.images = images;
+//    }
 
     @JsonIgnore
     @ManyToMany(mappedBy = "homeSet",fetch = FetchType.EAGER)

@@ -1,18 +1,13 @@
 package com.security.demospringsecurity.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 
 @Entity
-@Table(name = "file_model")
-public class FileModel {
+@Table(name = "image")
+public class Image {
     @Id
     @GeneratedValue
     @Column(name = "id")
@@ -29,9 +24,29 @@ public class FileModel {
     @Column(name="pic")
     private byte[] pic;
 
-    public FileModel(){}
+    @ManyToOne
+    @JoinColumn(name = "home_id")
+    private Home home;
 
-    public FileModel(String name, String mimetype, byte[] pic){
+    public Home getHome() {
+        return home;
+    }
+
+    public void setHome(Home home) {
+        this.home = home;
+    }
+
+    public Image(String name, String mimetype, byte[] pic, Home home) {
+        this.name = name;
+        this.mimetype = mimetype;
+        this.pic = pic;
+        this.home = home;
+    }
+
+    public Image() {
+    }
+
+    public Image(String name, String mimetype, byte[] pic) {
         this.name = name;
         this.mimetype = mimetype;
         this.pic = pic;

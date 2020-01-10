@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.catalina.Store;
@@ -20,6 +21,8 @@ public class Home {
     @Lob
     private String name;
     @Lob
+    private String picture;
+    @Lob
     private String address;
     @Lob
     private Integer bedroom;
@@ -31,73 +34,13 @@ public class Home {
     private TypeHome typeHome;
     @ManyToOne
     private TypeRoom typeRoom;
-
-
-    @Lob
-    private String description;
-
-    private Boolean status;
-
-//    private List<Image> photos;
-//
-//    public List<Image> getPhotos() {
-//        return photos;
-//    }
-//
-//    public void setPhotos(List<Image> photos) {
-//        this.photos = photos;
-//    }
-
-
-
-//    @JsonIgnore
-//    @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)
-//    private List<Image> images;
-
-//    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status, List<Image> images, Set<Booking> bookings) {
-//        this.name = name;
-//        this.address = address;
-//        this.bedroom = bedroom;
-//        this.bathroom = bathroom;
-//        this.price = price;
-//        this.typeHome = typeHome;
-//        this.typeRoom = typeRoom;
-//        this.description = description;
-//        this.status = status;
-//        this.images = images;
-//        this.bookings = bookings;
-//    }
-
-//    public List<Image> getImages() {
-//        return images;
-//    }
-//
-//    public void setImages(List<Image> images) {
-//        this.images = images;
-//    }
-
     @JsonIgnore
-    @ManyToMany(mappedBy = "homeSet",fetch = FetchType.EAGER)
-    private Set<Booking> bookings;
+  @OneToMany(targetEntity = Booking.class)
+  private List<Booking> booking;
 
-    public Set<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status) {
+    public Home(String name, String picture, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status) {
         this.name = name;
+        this.picture = picture;
         this.address = address;
         this.bedroom = bedroom;
         this.bathroom = bathroom;
@@ -107,6 +50,40 @@ public class Home {
         this.description = description;
         this.status = status;
     }
+
+//    public void setBooking(List<Booking> booking) {
+//        this.booking = booking;
+//    }
+
+    @Lob
+    private String description;
+
+    private Boolean status;
+
+
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+//    public List<Booking> getBooking() {
+//        return booking;
+//    }
+
+
 
     public Long getId() {
         return id;

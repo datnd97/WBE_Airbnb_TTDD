@@ -11,11 +11,9 @@ public class Image {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    @JsonView(View.FileInfo.class)
     private Long id;
 
     @Column(name = "name")
-    @JsonView(View.FileInfo.class)
     private String name;
 
     @Column(name = "mimetype")

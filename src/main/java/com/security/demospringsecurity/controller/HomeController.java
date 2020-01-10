@@ -33,8 +33,8 @@ public class HomeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getHome(@PathVariable Long id) {
-        Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
+        Home home = homeService.findById(id);
+        if(home != null) {
             return new ResponseEntity<>(home,HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -47,35 +47,35 @@ public class HomeController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
-        Optional<Home> currentHome = homeService.findById(id);
-        if(!currentHome.isPresent()) {
+        Home currentHome = homeService.findById(id);
+        if(currentHome == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        currentHome.get().setName(home.getName());
-        currentHome.get().setAddress(home.getAddress());
-        currentHome.get().setBathroom(home.getBathroom());
-        currentHome.get().setBedroom(home.getBedroom());
-        currentHome.get().setDescription(home.getDescription());
-        currentHome.get().setPrice(home.getPrice());
-        currentHome.get().setTypeHome(home.getTypeHome());
-        currentHome.get().setTypeRoom(home.getTypeRoom());
-        currentHome.get().setStatus(home.getStatus());
-        homeService.save(currentHome.get());
-        return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
+        currentHome.setName(home.getName());
+        currentHome.setAddress(home.getAddress());
+        currentHome.setBathroom(home.getBathroom());
+        currentHome.setBedroom(home.getBedroom());
+        currentHome.setDescription(home.getDescription());
+        currentHome.setPrice(home.getPrice());
+        currentHome.setTypeHome(home.getTypeHome());
+        currentHome.setTypeRoom(home.getTypeRoom());
+        currentHome.setStatus(home.getStatus());
+        homeService.save(currentHome);
+        return new ResponseEntity<>(currentHome,HttpStatus.CREATED);
     }
     @PutMapping("/{id}/status")
     public ResponseEntity<?> updateStatus(@PathVariable Long id,@RequestBody StatusForm status) {
-        Optional<Home> current = homeService.findById(id);
-        if(!current.isPresent()) {
+        Home current = homeService.findById(id);
+        if(current ==null ) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        current.get().setStatus(status.getStatus());
-        return new ResponseEntity<>(current.get(),HttpStatus.CREATED);
+        current.setStatus(status.getStatus());
+        return new ResponseEntity<>(current,HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
-        Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
+        Home home = homeService.findById(id);
+        if(home!= null) {
             homeService.delete(id);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

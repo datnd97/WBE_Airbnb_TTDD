@@ -8,11 +8,12 @@ import java.util.Optional;
 
 public interface HomeService {
     Iterable<Home> findAll();
-    Optional<Home> findById(Long id);
+    Home findById(Long id);
     Home save(Home home);
     void delete(Long id);
     Iterable<Home> findAllByName(String name);
 
-//    @Select({"select", SELECT_FIELDS, "from", TABLE_NAEM, "where id=#{id}"})
+    //    @Select({"select", SELECT_FIELDS, "from", TABLE_NAEM, "where id=#{id}"})
 //    Article selectById(int id);
+
 }

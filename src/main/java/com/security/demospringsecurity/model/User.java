@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -48,6 +49,10 @@ public class User{
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+//    @OneToMany(targetEntity = Booking.class)
+//    private Booking booking;
+
+
     public User() {}
 
     public User(String name, String username, String email, String password) {
@@ -56,6 +61,28 @@ public class User{
         this.email = email;
         this.password = password;
     }
+
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public User(@NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(max = 50) @Email String email, @NotBlank @Size(min = 6, max = 100) String password, Set<Role> roles, List<User> users) {
+        this.name = name;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.users = users;
+    }
+
+    @JsonIgnore
+    @OneToMany(targetEntity = User.class,cascade = CascadeType.ALL)
+    private List<User> users;
 
     public Long getId() {
         return id;

@@ -3,6 +3,7 @@ package com.security.demospringsecurity.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,14 +11,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import static com.security.demospringsecurity.util.DateParser.dateParser;
+@Data
 @Entity
 @Table(name="booking")
 public class Booking {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date da
+    private Date checkin;
+    private Date checkout;
     @Lob
     private Long children;
 
@@ -33,89 +36,29 @@ public class Booking {
     @ManyToOne
     User user;
 
-    public Booking(String dateCreate, String dateEnd, Long children, Long guest, Boolean cancelled, Home home, User user) {
-        this.dateCreate = dateCreate;
-        this.dateEnd = dateEnd;
-        this.children = children;
-        this.guest = guest;
-        this.cancelled = cancelled;
-        this.home = home;
-        this.user = user;
+    private Date timeNow;
+
+    public String  getTimeNow() {
+        return dateParser(timeNow,"yyyy-MM-dd HH:mm:ss");
     }
 
-    public String getDateCreate() {
-        return dateCreate;
+    public void setTimeNow(Date timeNow) {
+        this.timeNow = timeNow;
     }
 
-    public void setDateCreate(String dateCreate) {
-        this.dateCreate = dateCreate;
+    public void setCheckin(Date checkin) {
+        this.checkin = checkin;
     }
 
-    public String getDateEnd() {
-        return dateEnd;
+    public void setCheckout(Date checkout) {
+        this.checkout = checkout;
     }
 
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
+    public String getCheckin() {
+        return dateParser(checkin,"yyyy-MM-dd");
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
-
-    public Home getHome() {
-        return home;
-    }
-
-    public void setHome(Home home) {
-        this.home = home;
-    }
-
-    public Boolean getCancelled() {
-        return cancelled;
-    }
-
-    public void setCancelled(Boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-
-
-
-    public Long getChildren() {
-        return children;
-    }
-
-    public void setChildren(Long children) {
-        this.children = children;
-    }
-
-    public Long getGuest() {
-        return guest;
-    }
-
-    public void setGuest(Long guest) {
-        this.guest = guest;
-    }
-
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Booking() {
-    }
-
-
+    public String getCheckout() {
+        return dateParser(checkout,"yyyy-MM-dd");
+    };
 }

@@ -3,6 +3,8 @@ package com.security.demospringsecurity.controller;
 import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.User;
+import com.security.demospringsecurity.repository.BookingRepository;
+import com.security.demospringsecurity.repository.HomeRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
@@ -15,11 +17,12 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/auth/booking")
+@RequestMapping("/api/booking")
 public class BookingController {
 
     private UserPrinciple getCurrentUser() {
@@ -32,6 +35,10 @@ public class BookingController {
     private HomeService homeService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
+    private HomeRepository homeRepository;
     @RequestMapping(value = "create/{id}",method = RequestMethod.POST
             ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
@@ -39,6 +46,8 @@ public class BookingController {
         Home home = homeService.findById(id);
         booking.setCancelled(Boolean.FALSE);
         booking.setHome(home);
+        Date now = new Date();
+        booking.setTimeNow(now);
         User user = userService.findById(getCurrentUser().getId());
         booking.setUser(user);
         bookingService.save(booking);
@@ -46,6 +55,7 @@ public class BookingController {
     }
     @GetMapping
     public ResponseEntity<?> listBooking(){
+
         return new ResponseEntity<>(bookingService.findAll(),HttpStatus.OK);
     }
     @GetMapping("/{id}")

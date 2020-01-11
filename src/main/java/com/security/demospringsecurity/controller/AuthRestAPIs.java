@@ -55,7 +55,7 @@ public class AuthRestAPIs {
         String jwt = jwtProvider.generateJwtToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), "ADMIN"));
     }
 
     @PostMapping("/signup")
@@ -72,33 +72,32 @@ public class AuthRestAPIs {
 
         // Creating user's account
         User user = new User(signUpRequest.getName(), signUpRequest.getUsername(), signUpRequest.getEmail(),
-                passwordEncoder.encode(signUpRequest.getPassword()));
+                passwordEncoder.encode(signUpRequest.getPassword()), signUpRequest.getRole());
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        String strRoles = signUpRequest.getRole();
 
-        strRoles.forEach(role -> {
-            switch (role) {
-                case "admin":
-                    Role adminRole = roleRepository.findByName(RoleName.ADMIN)
-                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-                    roles.add(adminRole);
 
-                    break;
-                case "pm":
-                    Role pmRole = roleRepository.findByName(RoleName.PM)
-                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-                    roles.add(pmRole);
+//        strRoles.forEach(role -> {
+//            switch (role) {
+//                case "admin":
+//                    Role adminRole = roleRepository.findByName(RoleName.ADMIN)
+//                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+//                    roles.add(adminRole);
+//
+//                    break;
+//                case "pm":
+//                    Role pmRole = roleRepository.findByName(RoleName.PM)
+//                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+//                    roles.add(pmRole);
+//
+//                    break;
+//                default:
+//                    Role userRole = roleRepository.findByName(RoleName.USER)
+//                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
+//                    roles.add(userRole);
+//            }
+//        });
 
-                    break;
-                default:
-                    Role userRole = roleRepository.findByName(RoleName.USER)
-                            .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User Role not find."));
-                    roles.add(userRole);
-            }
-        });
-
-        user.setRoles(roles);
         userRepository.save(user);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);

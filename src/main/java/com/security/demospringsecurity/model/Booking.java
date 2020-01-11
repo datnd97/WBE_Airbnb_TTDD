@@ -16,15 +16,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
-    @Column(name = "date_create")
-    private String dateCreate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
-    @Column(name = "date_edn")
-    private String dateEnd;
-
-
+    private Date da
     @Lob
     private Long children;
 

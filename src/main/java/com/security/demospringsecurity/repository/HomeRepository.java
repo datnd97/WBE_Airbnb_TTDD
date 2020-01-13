@@ -8,7 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
-import java.util.Optional;
 
 @Repository
 public interface HomeRepository extends PagingAndSortingRepository<Home,Long> {
@@ -17,13 +16,13 @@ public interface HomeRepository extends PagingAndSortingRepository<Home,Long> {
 //    public List<EntityClassTable> getAllBetweenDates(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
 
 //    Iterable<Home> findAllByStartDateLessThanEqualAndEndDateGreaterThanEqual(Date endDate, Date startDate);
-    Optional<Home> findByBedroom(Integer bedroom);
-    Optional<Home> findByBathroom(Integer bathroom);
-    Optional<Home> findByTypeRoom(TypeRoom typeRoom);
-    Optional<Home> findByTypeHome(TypeHome typeHome);
-    Optional<Home> findByAddress(String address);
-    Optional<Home> findByPrice(Double price);
-    Optional<Home> findByDescription(String description);
+    Iterable<Home> findByBedroom(Integer bedroom);
+    Iterable<Home> findByBathroom(Integer bathroom);
+    Iterable<Home> findByTypeRoom(TypeRoom typeRoom);
+    Iterable<Home> findByTypeHome(TypeHome typeHome);
+    Iterable<Home> findByAddress(String address);
+    Iterable<Home> findByPrice(Double price);
+    Iterable<Home> findByDescription(String description);
 
 
 

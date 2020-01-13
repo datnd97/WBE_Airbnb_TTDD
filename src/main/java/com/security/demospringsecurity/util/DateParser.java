@@ -21,7 +21,7 @@ public class DateParser {
 //
         if (format.equals("yyyy-MM-dd HH:mm:ss")) {
           //：2016-07-06 09:39:58
-            DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //HH表示24小时制；
+            DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             formatDate = dFormat.format(dt);
             return formatDate;
         }

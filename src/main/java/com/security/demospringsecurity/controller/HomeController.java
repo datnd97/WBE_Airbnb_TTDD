@@ -25,30 +25,33 @@ public class HomeController {
     @GetMapping
     public ResponseEntity<?> listHome() {
         List<Home> homes = (List<Home>) homeService.findAll();
-        if(homes.isEmpty()) {
+
+        if (homes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(homes,HttpStatus.OK);
+        return new ResponseEntity<>(homes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
-            return new ResponseEntity<>(home,HttpStatus.OK);
+        if (home.isPresent()) {
+            return new ResponseEntity<>(home, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
     @PostMapping
     public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
-        
+
         homeService.save(home);
-        return new ResponseEntity<>(home,HttpStatus.CREATED);
+        return new ResponseEntity<>(home, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateHome(@PathVariable Long id,@RequestBody Home home) {
+    public ResponseEntity<?> updateHome(@PathVariable Long id, @RequestBody Home home) {
         Optional<Home> currentHome = homeService.findById(id);
-        if(!currentHome.isPresent()) {
+        if (!currentHome.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentHome.get().setName(home.getName());
@@ -61,48 +64,47 @@ public class HomeController {
         currentHome.get().setTypeRoom(home.getTypeRoom());
         currentHome.get().setStatus(home.getStatus());
         homeService.save(currentHome.get());
-        return new ResponseEntity<>(currentHome.get(),HttpStatus.CREATED);
+        return new ResponseEntity<>(currentHome.get(), HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}/status")
-    public ResponseEntity<?> updateStatus(@PathVariable Long id,@RequestBody StatusForm status) {
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody StatusForm status) {
         Optional<Home> current = homeService.findById(id);
-        if(!current.isPresent()) {
+        if (!current.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         current.get().setStatus(status.getStatus());
-        return new ResponseEntity<>(current.get(),HttpStatus.CREATED);
+        return new ResponseEntity<>(current.get(), HttpStatus.CREATED);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
         Optional<Home> home = homeService.findById(id);
-        if(home.isPresent()) {
+        if (home.isPresent()) {
             homeService.delete(id);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PostMapping("/search-by-name")
     public ResponseEntity<?> searchHomeName(@RequestBody SearchHomeByNameForm form) {
-        if(form.getName().equals("") || form.getName() == null) {
+        if (form.getName().equals("") || form.getName() == null) {
             List<Home> homes = (List<Home>) homeService.findAll();
-            if(homes.isEmpty()) {
+            if (homes.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            else {
+            } else {
                 return new ResponseEntity<>(homes, HttpStatus.OK);
             }
-        }
-        else {
+        } else {
             List<Home> homes = (List<Home>) homeService.findAllByName(form.getName());
-            if(homes.isEmpty()) {
+            if (homes.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            else {
-                return new ResponseEntity<>(homes,HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(homes, HttpStatus.OK);
             }
         }
 
     }
-
 
 
 }

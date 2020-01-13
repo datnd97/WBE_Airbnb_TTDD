@@ -39,6 +39,26 @@ public class Home {
     @OneToMany(mappedBy = "home")
     private Set<Booking> bookings = new HashSet<>();
 
+    @OneToMany(mappedBy = "home")
+    private Set<Image> images = new HashSet<>();
+
+    public Set<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<Image> images) {
+        this.images = images;
+    }
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Long getId() {
         return id;
     }
@@ -147,5 +167,5 @@ public class Home {
                 '}';
     }
     public Home(String name, String address, Integer bedroom, Integer bathroom,
-                double price, TypeHome typeHome, TypeRoom typeRoom, String description, boolean status){};
+                double price, TypeHome typeHome, TypeRoom typeRoom,String fileName, String description, boolean status){};
 }

@@ -38,6 +38,17 @@ public class Home {
     @OneToMany(targetEntity = Booking.class)
     private List<Booking> booking;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Image.class , mappedBy = "home" , cascade = CascadeType.ALL)
+    private List<Image> images;
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
 
     public Home() {
     }

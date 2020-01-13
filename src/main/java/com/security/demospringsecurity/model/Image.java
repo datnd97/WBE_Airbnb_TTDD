@@ -42,14 +42,14 @@ public class Image {
         this.blobString = blobString;
     }
 
-    @ManyToOne
-    private Home home;
+//    @ManyToOne
+//    private Home home;
 
-    public Home getHome() {
-        return home;
-    }
-
-    public void setHome(Home home) {
-        this.home = home;
-    }
+//    public Home getHome() {
+//        return home;
+//    }
+//
+//    public void setHome(Home home) {
+//        this.home = home;
+//    }
 }

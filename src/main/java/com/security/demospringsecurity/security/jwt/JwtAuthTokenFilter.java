@@ -1,6 +1,9 @@
 package com.security.demospringsecurity.security.jwt;
 
-import com.security.demospringsecurity.security.service.UserDetailsServiceImpl;
+import com.security.demospringsecurity.config.Constants;
+import com.security.demospringsecurity.service.impl.UserDetailsServiceImpl;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,7 @@ import java.io.IOException;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtProvider tokenProvider;
+    private JwtProvider jwtTokenUtil;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -27,26 +30,37 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthTokenFilter.class);
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        String header = req.getHeader(Constants.HEADER_STRING);
+        String username = null;
+        String authToken = null;
+        if (header != null && header.startsWith(Constants.TOKEN_PREFIX)) {
+            authToken = header.replace(Constants.TOKEN_PREFIX,"");
+            try {
+                username = jwtTokenUtil.getUsernameFromToken(authToken);
+            } catch (IllegalArgumentException e) {
+                logger.error("an error occured during getting username from token", e);
+            } catch (ExpiredJwtException e) {
+                logger.warn("the token is expired and not valid anymore", e);
+            } catch(SignatureException e){
+                logger.error("Authentication Failed. Username or Password not valid.");
+            }
+        } else {
+            logger.warn("couldn't find bearer string, will ignore the header");
+        }
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            String jwt = getJwt(request);
-            if (jwt != null && tokenProvider.validateJwtToken(jwt)) {
-                String username = tokenProvider.getUserNameFromJwtToken(jwt);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                UsernamePasswordAuthenticationToken authentication = jwtTokenUtil.getAuthentication(authToken, SecurityContextHolder.getContext().getAuthentication(), userDetails);
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-        } catch (Exception e) {
-            logger.error("Can NOT set user authentication -> Message: {}", e);
         }
 
-        filterChain.doFilter(request, response);
+        chain.doFilter(req, res);
     }
 
     private String getJwt(HttpServletRequest request) {

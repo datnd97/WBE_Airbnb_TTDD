@@ -1,26 +1,19 @@
 package com.security.demospringsecurity.model;
 
-import org.hibernate.annotations.NaturalId;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "roles")
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @NaturalId
-    @Column(length = 60)
-    private RoleName name;
+    @Column(name = "name")
+    private String name;
 
-    public Role() {}
-
-    public Role(RoleName name) {
-        this.name = name;
-    }
+    @Column(name = "description")
+    private String description;
 
     public Long getId() {
         return id;
@@ -30,11 +23,19 @@ public class Role {
         this.id = id;
     }
 
-    public RoleName getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(RoleName name) {
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

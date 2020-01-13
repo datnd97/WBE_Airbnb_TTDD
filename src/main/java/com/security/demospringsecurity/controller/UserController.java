@@ -1,71 +1,84 @@
-//package com.security.demospringsecurity.controller;
-//
-//import com.security.demospringsecurity.model.User;
-//import com.security.demospringsecurity.security.service.UserService;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.validation.BindingResult;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
-//import org.springframework.web.servlet.ModelAndView;
-//
-//import javax.validation.Valid;
-//
-//@Controller
-//public class UserController {
-//    @Autowired
-//    private UserService userService;
-//
-//    @RequestMapping(value = {"/login","/"} ,method = RequestMethod.GET)
-//    public ModelAndView login() {
-//        ModelAndView mv = new ModelAndView();
-//        mv.setViewName("user/login");
-//        return mv;
-//    }
-//
-//    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-//    public ModelAndView signup(){
-//        ModelAndView mv = new ModelAndView();
-//        User user = new User();
-//        mv.setViewName("user/signup");
-//        mv.addObject("user", user);
-//        return mv;
-//    }
-//
-//    @RequestMapping(value = "/signup",method =RequestMethod.POST )
-//    public ModelAndView createUser(@Valid User user, BindingResult bindingResult){
-//        ModelAndView mv= new ModelAndView();
-//        User userExits = userService.findUserByEmail(user.getEmail());
-//        if(userExits != null){
-//            bindingResult.rejectValue("email","error.user","this email already exist");
-//        }if (bindingResult.hasFieldErrors()){
-//            mv.setViewName("user/signup");
-//        }else {
-//            userService.saveUser(user);
-//            mv.addObject("msg","Registed successfully!!");
-//            mv.addObject("user", new User());
-//            mv.setViewName("user/signup");
-//        }
-//        return mv;
-//    }
-//
-//    @RequestMapping(value = "/home",method = RequestMethod.GET)
-//    public ModelAndView home(){
-//        ModelAndView mv = new ModelAndView();
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        User user = userService.findUserByEmail(auth.getName());
-//
-//        mv.setViewName("/home/home");
-//        mv.addObject("userName", user.getFirstname()+ " "+user.getLastname());
-//        return mv;
-//    }
-//
-//    @RequestMapping(value = "/access_denied", method = RequestMethod.GET)
-//    public ModelAndView accessDenied(){
-//        ModelAndView mv= new ModelAndView();
-//        mv.setViewName("error/access_denied");
-//        return mv;
-//    }
-//}
+package com.security.demospringsecurity.controller;
+
+
+import com.security.demospringsecurity.model.*;
+import com.security.demospringsecurity.security.jwt.JwtProvider;
+import com.security.demospringsecurity.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping(value = "/users")
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtProvider jwtTokenUtil;
+
+    //@Secured({"ROLE_ADMIN", "ROLE_USER"})
+//    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public List<User> listUser() {
+        return userService.findAll();
+    }
+
+    //@Secured("ROLE_USER")
+//    @PreAuthorize("hasRole('USER')")
+    ////@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public User getOne(@PathVariable(value = "id") Long id) {
+        return userService.findById(id);
+    }
+
+
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public User saveUser(@RequestBody UserDto user) {
+        return userService.save(user);
+    }
+
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public List<Role> getRoles() {
+        return userService.getRoles();
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody LoginUser loginUser) throws AuthenticationException {
+        System.out.print("Login Controller Start");
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginUser.getUsername(),
+                        loginUser.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        final String token = jwtTokenUtil.generateJwtToken(authentication);
+        GrantedAuthority roleName = null;
+        if (authentication.getAuthorities().size() > 0) {
+            roleName = authentication.getAuthorities().iterator().next();
+        }
+        System.out.println("role name ="  + roleName.getAuthority());
+        return ResponseEntity.ok(new AuthToken(token, roleName.getAuthority()));
+    }
+
+    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+    public User changepassword(@RequestBody UpdatePasswordDto user) {
+        return userService.updatePassword(user);
+    }
+}

@@ -1,5 +1,6 @@
 package com.security.demospringsecurity.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.apache.catalina.Store;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "home")
 public class Home {
@@ -18,6 +20,8 @@ public class Home {
     private Long id;
     @Lob
     private String name;
+    @Lob
+    private String picture;
     @Lob
     private String address;
     @Lob
@@ -30,82 +34,19 @@ public class Home {
     private TypeHome typeHome;
     @ManyToOne
     private TypeRoom typeRoom;
+    @JsonIgnore
+    @OneToMany(targetEntity = Booking.class)
+    private List<Booking> booking;
 
+
+    public Home() {
+    }
 
     @Lob
     private String description;
 
     private Boolean status;
 
-//    private List<Image> photos;
-//
-//    public List<Image> getPhotos() {
-//        return photos;
-//    }
-//
-//    public void setPhotos(List<Image> photos) {
-//        this.photos = photos;
-//    }
-
-
-
-//    @JsonIgnore
-//    @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)
-//    private List<Image> images;
-
-//    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status, List<Image> images, Set<Booking> bookings) {
-//        this.name = name;
-//        this.address = address;
-//        this.bedroom = bedroom;
-//        this.bathroom = bathroom;
-//        this.price = price;
-//        this.typeHome = typeHome;
-//        this.typeRoom = typeRoom;
-//        this.description = description;
-//        this.status = status;
-//        this.images = images;
-//        this.bookings = bookings;
-//    }
-
-//    public List<Image> getImages() {
-//        return images;
-//    }
-//
-//    public void setImages(List<Image> images) {
-//        this.images = images;
-//    }
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "homeSet",fetch = FetchType.EAGER)
-    private Set<Booking> bookings;
-
-    public Set<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(Set<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
-    public Home(String name, String address, Integer bedroom, Integer bathroom, Double price, TypeHome typeHome, TypeRoom typeRoom, String description, Boolean status) {
-        this.name = name;
-        this.address = address;
-        this.bedroom = bedroom;
-        this.bathroom = bathroom;
-        this.price = price;
-        this.typeHome = typeHome;
-        this.typeRoom = typeRoom;
-        this.description = description;
-        this.status = status;
-    }
 
     public Long getId() {
         return id;
@@ -123,6 +64,14 @@ public class Home {
         this.name = name;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -131,19 +80,19 @@ public class Home {
         this.address = address;
     }
 
-    public int getBedroom() {
+    public Integer getBedroom() {
         return bedroom;
     }
 
-    public void setBedroom(int bedroom) {
+    public void setBedroom(Integer bedroom) {
         this.bedroom = bedroom;
     }
 
-    public int getBathroom() {
+    public Integer getBathroom() {
         return bathroom;
     }
 
-    public void setBathroom(int bathroom) {
+    public void setBathroom(Integer bathroom) {
         this.bathroom = bathroom;
     }
 
@@ -163,6 +112,21 @@ public class Home {
         this.typeHome = typeHome;
     }
 
+    public TypeRoom getTypeRoom() {
+        return typeRoom;
+    }
+
+    public void setTypeRoom(TypeRoom typeRoom) {
+        this.typeRoom = typeRoom;
+    }
+
+    public List<Booking> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Booking> booking) {
+        this.booking = booking;
+    }
 
     public String getDescription() {
         return description;
@@ -172,24 +136,11 @@ public class Home {
         this.description = description;
     }
 
-    public void setBedroom(Integer bedroom) {
-        this.bedroom = bedroom;
+    public Boolean getStatus() {
+        return status;
     }
 
-    public void setBathroom(Integer bathroom) {
-        this.bathroom = bathroom;
-    }
-
-    public TypeRoom getTypeRoom() {
-        return typeRoom;
-    }
-
-    public void setTypeRoom(TypeRoom typeRoom) {
-        this.typeRoom = typeRoom;
-    }
-
-
-
-    public Home() {
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

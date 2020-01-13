@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
+
 @Entity
 @Table(name = "typeHome")
 public class TypeHome {
@@ -21,6 +22,7 @@ public class TypeHome {
 
     public TypeHome() {
     }
+
     public Long getId() {
         return id;
     }
@@ -44,9 +46,4 @@ public class TypeHome {
     public void setHomes(List<Home> homes) {
         this.homes = homes;
     }
-
-    public TypeHome(String name) {
-        this.name = name;
-    }
-
 }

@@ -20,8 +20,8 @@ public class HomeServiceImpl implements HomeService {
     }
 
     @Override
-    public Optional<Home> findById(Long id) {
-        return homeRepository.findById(id);
+    public Home findById(Long id){
+       return homeRepository.findById(id).get();
     }
 
     @Override
@@ -38,6 +38,8 @@ public class HomeServiceImpl implements HomeService {
     public Iterable<Home> findAllByName(String name) {
         return homeRepository.findAllByName(name);
     }
+
+
 
 
 }

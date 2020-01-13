@@ -16,8 +16,12 @@ public class TypeRoom {
     private String name;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
+    @OneToMany(targetEntity = Home.class, mappedBy = "typeHome", cascade = CascadeType.ALL)
     private List<Home> homes;
+
+    public TypeRoom() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -34,11 +38,6 @@ public class TypeRoom {
         this.name = name;
     }
 
-
-
-    public TypeRoom() {
-    }
-
     public List<Home> getHomes() {
         return homes;
     }
@@ -46,16 +45,4 @@ public class TypeRoom {
     public void setHomes(List<Home> homes) {
         this.homes = homes;
     }
-
-    public TypeRoom(String name, List<Home> homes) {
-        this.name = name;
-        this.homes = homes;
-    }
-
-    public TypeRoom(String name) {
-        this.name = name;
-    }
-
-
-
 }

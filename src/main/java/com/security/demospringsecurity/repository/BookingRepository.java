@@ -13,7 +13,9 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking,Long> {
-    ArrayList<Booking> findAllByUser(User user);
+//    ArrayList<Booking> findAllByUser(User user);
     Booking findByUserAndId(User user,Long id);
-    Booking findAllByCheckinAfterAndAndCheckout(Date checkin,Date checkout);
+//    Booking findAllByCheckinAfterAndAndCheckout(Date checkin,Date checkout);
+    List<Booking> findBookingByUserId(Long id);
+    List<Booking> findBookingByCancelledAndUserId(Boolean status,Long id);
 }

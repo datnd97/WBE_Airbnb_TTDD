@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,7 +40,10 @@ public class HomeServiceImpl implements HomeService {
         return homeRepository.findAllByName(name);
     }
 
-
+    @Override
+    public List<Home> filter(String name, String address) {
+        return homeRepository.findAllByNameContainingAndAddressContaining(name , address);
+    }
 
 
 }

@@ -5,6 +5,7 @@ import com.security.demospringsecurity.message.request.StatusForm;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.service.HomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,14 @@ public class HomeController {
     private HomeService homeService;
 
     @GetMapping
-    public ResponseEntity<?> listHome() {
-        List<Home> homes = (List<Home>) homeService.findAll();
-        if(homes.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> listHome(@RequestParam(value = "name", required = false)String name, @RequestParam(value = "address", required = false) String address) {
+        List<Home> homes;
+        if(!name.isEmpty() && !address.isEmpty()) {
+            homes = (List<Home>) homeService.filter(name, address);
+        }else {
+            homes = (List<Home>) homeService.findAll();
         }
+
         return new ResponseEntity<>(homes,HttpStatus.OK);
     }
 

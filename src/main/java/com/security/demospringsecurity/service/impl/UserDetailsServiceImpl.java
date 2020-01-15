@@ -4,6 +4,7 @@ import com.security.demospringsecurity.model.*;
 import com.security.demospringsecurity.repository.RolesRepository;
 import com.security.demospringsecurity.repository.UserRepository;
 import com.security.demospringsecurity.repository.UserRolesRepository;
+import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority(user));
+        return UserPrinciple.build(user);
     }
 
     private Set<SimpleGrantedAuthority> getAuthority(User user) {

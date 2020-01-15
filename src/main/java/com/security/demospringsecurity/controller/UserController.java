@@ -1,11 +1,14 @@
 package com.security.demospringsecurity.controller;
 
 
+import com.security.demospringsecurity.message.response.JwtResponse;
 import com.security.demospringsecurity.model.*;
 import com.security.demospringsecurity.security.jwt.JwtProvider;
+import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +17,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
 
@@ -31,6 +36,9 @@ public class UserController {
 
     @Autowired
     private JwtProvider jwtTokenUtil;
+    private UserPrinciple getCurrentUser() {
+        return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 
     //@Secured({"ROLE_ADMIN", "ROLE_USER"})
 //    @PreAuthorize("hasRole('ADMIN')")
@@ -61,20 +69,23 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginUser loginUser) throws AuthenticationException {
         System.out.print("Login Controller Start");
+
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getUsername(),
                         loginUser.getPassword()
                 )
         );
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         final String token = jwtTokenUtil.generateJwtToken(authentication);
+        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         GrantedAuthority roleName = null;
         if (authentication.getAuthorities().size() > 0) {
             roleName = authentication.getAuthorities().iterator().next();
         }
-        System.out.println("role name ="  + roleName.getAuthority());
-        return ResponseEntity.ok(new AuthToken(token, roleName.getAuthority()));
+        return ResponseEntity.ok(new AuthToken(userPrinciple.getId(),token,roleName.getAuthority()));
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)

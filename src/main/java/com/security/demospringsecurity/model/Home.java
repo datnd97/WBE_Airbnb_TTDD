@@ -37,21 +37,7 @@ public class Home {
     @OneToMany(targetEntity = Booking.class)
     private List<Booking> booking;
 
-    @Lob
-    private String urlFile;
 
-
-//    @JsonIgnore
-//    @OneToMany(targetEntity = Image.class , mappedBy = "home" , cascade = CascadeType.ALL)
-//    private List<Image> images;
-//
-//    public List<Image> getImages() {
-//        return images;
-//    }
-
-//    public void setImages(List<Image> images) {
-//        this.images = images;
-//    }
 
     public Home() {
     }
@@ -76,14 +62,6 @@ public class Home {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUrlFile() {
-        return urlFile;
-    }
-
-    public void setUrlFile(String urlFile) {
-        this.urlFile = urlFile;
     }
 
     public String getAddress() {

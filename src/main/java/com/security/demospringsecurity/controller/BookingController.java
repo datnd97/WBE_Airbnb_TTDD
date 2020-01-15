@@ -12,23 +12,31 @@ import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/booking")
+@RequestMapping("/api/auth/booking")
 public class BookingController {
 
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     }
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
     @Autowired
     private BookingService bookingService;
     @Autowired
@@ -55,8 +63,19 @@ public class BookingController {
     }
     @GetMapping
     public ResponseEntity<?> listBooking(){
-
-        return new ResponseEntity<>(bookingService.findAll(),HttpStatus.OK);
+        System.out.println("Da vao day");
+        List<Booking> bookings = (List<Booking>) bookingService.findAll();
+        return new ResponseEntity<>(bookings,HttpStatus.OK);
+    }
+    // Fail:
+    @RequestMapping(value = "find",method = RequestMethod.GET
+            ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
+            consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
+    public ResponseEntity<?> findByDate(@RequestParam(value = "checkin") String checkin,
+                                       @RequestParam(value = "checkout") String checkout) throws ParseException {
+        Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(checkin);
+        Date date2 = new SimpleDateFormat("yyyy/MM/dd").parse(checkout);
+        return new ResponseEntity<>(bookingRepository.findAllByCheckinAfterAndAndCheckout(date1,date2),HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Long id) {
@@ -76,5 +95,16 @@ public class BookingController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/list-booking-user")
+    public ResponseEntity<?> listBookingByUser() {
+        Long userId = getCurrentUser().getId();
+        User user = userService.findById(userId);
+        List<Booking> bookings = bookingRepository.findAllByUser(user);
+        ArrayList<Home> homes = new ArrayList<Home>();
+        for(int i = 0 ; i < bookings.size(); i++) {
+            homes.add(bookings.get(i).getHome());
+        }
+        return new ResponseEntity<>(homes, HttpStatus.OK);
+    }
 
 }

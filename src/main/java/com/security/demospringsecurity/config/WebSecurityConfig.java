@@ -58,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/users/login",
                         "/users/register",
                         "/users/roles",
-                        "/users/change-password").permitAll()
+                        "/users/change-password",
+                        "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

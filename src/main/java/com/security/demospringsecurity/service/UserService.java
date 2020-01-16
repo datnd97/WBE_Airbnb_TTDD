@@ -1,9 +1,9 @@
 package com.security.demospringsecurity.service;
 
-import com.security.demospringsecurity.model.Role;
-import com.security.demospringsecurity.model.UpdatePasswordDto;
-import com.security.demospringsecurity.model.User;
-import com.security.demospringsecurity.model.UserDto;
+import com.security.demospringsecurity.model.login.Role;
+import com.security.demospringsecurity.model.login.UpdatePasswordDto;
+import com.security.demospringsecurity.model.login.User;
+import com.security.demospringsecurity.model.login.UserDto;
 
 import java.util.List;
 
@@ -17,8 +17,6 @@ public interface UserService {
     User findOne(String username);
 
     User findById(Long id);
-
-    List<Role> getRoles();
 
     User updatePassword(UpdatePasswordDto user);
 }

@@ -1,4 +1,4 @@
-package com.security.demospringsecurity.model;
+package com.security.demospringsecurity.model.login;
 
 public class UpdatePasswordDto {
     private String username;

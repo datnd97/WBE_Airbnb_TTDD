@@ -2,7 +2,7 @@ package com.security.demospringsecurity.controller;
 
 import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
-import com.security.demospringsecurity.model.User;
+import com.security.demospringsecurity.model.login.User;
 import com.security.demospringsecurity.repository.BookingRepository;
 import com.security.demospringsecurity.repository.HomeRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Date;
 import java.util.Optional;
 

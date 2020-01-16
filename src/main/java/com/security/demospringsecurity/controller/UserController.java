@@ -1,13 +1,11 @@
 package com.security.demospringsecurity.controller;
 
 
-import com.security.demospringsecurity.model.*;
+import com.security.demospringsecurity.model.login.*;
 import com.security.demospringsecurity.security.jwt.JwtProvider;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,10 +51,7 @@ public class UserController {
         return userService.save(user);
     }
 
-    @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public List<Role> getRoles() {
-        return userService.getRoles();
-    }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginUser loginUser) throws AuthenticationException {

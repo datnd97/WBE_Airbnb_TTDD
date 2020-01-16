@@ -1,9 +1,8 @@
 package com.security.demospringsecurity.service.impl;
 
-import com.security.demospringsecurity.model.*;
+import com.security.demospringsecurity.model.login.*;
 import com.security.demospringsecurity.repository.RolesRepository;
 import com.security.demospringsecurity.repository.UserRepository;
-import com.security.demospringsecurity.repository.UserRolesRepository;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,9 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
 
     @Autowired
     RolesRepository rolesRepository;
-
-    @Autowired
-    UserRolesRepository userRolesRepository;
 
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
@@ -61,10 +57,6 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         newUser.setEmail(user.getEmail());
         newUser.setName(user.getName());
         newUser = userDao.save(newUser);
-        UserRoles newUserRoles = new UserRoles();
-        newUserRoles.setUserId(newUser.getId());
-        newUserRoles.setRoleId(user.getRoleId());
-        userRolesRepository.save(newUserRoles);
         return newUser;
     }
 
@@ -89,12 +81,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public User findById(Long id) {
         return userDao.findById(id).get();
     }
-
-    @Override
-    public List<Role> getRoles() {
-        return (List<Role>) rolesRepository.findAll();
-    }
-
+    
     @Override
     public User updatePassword(UpdatePasswordDto user) {
         User currentUser = userDao.findByUsername(user.getUsername());

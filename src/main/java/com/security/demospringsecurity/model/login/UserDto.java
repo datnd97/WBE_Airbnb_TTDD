@@ -1,4 +1,4 @@
-package com.security.demospringsecurity.model;
+package com.security.demospringsecurity.model.login;
 
 public class UserDto {
     private String username;

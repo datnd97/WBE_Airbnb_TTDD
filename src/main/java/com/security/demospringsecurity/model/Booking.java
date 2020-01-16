@@ -1,14 +1,10 @@
 package com.security.demospringsecurity.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.security.demospringsecurity.model.login.User;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
 import static com.security.demospringsecurity.util.DateParser.dateParser;
 
 

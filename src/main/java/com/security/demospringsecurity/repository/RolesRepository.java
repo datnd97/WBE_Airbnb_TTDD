@@ -1,6 +1,6 @@
 package com.security.demospringsecurity.repository;
 
-import com.security.demospringsecurity.model.Role;
+import com.security.demospringsecurity.model.login.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

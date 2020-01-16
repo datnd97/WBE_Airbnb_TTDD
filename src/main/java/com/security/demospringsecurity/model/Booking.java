@@ -47,7 +47,7 @@ public class Booking {
     private Date timeNow;
 
     public String  getTimeNow() {
-        return dateParser(timeNow,"yyyy-MM-dd HH:mm:ss");
+        return dateParser(timeNow,"yyyy/MM/dd HH:mm:ss");
     }
 
     public void setTimeNow(Date timeNow) {
@@ -63,11 +63,11 @@ public class Booking {
     }
 
     public String getCheckin() {
-        return dateParser(checkin,"yyyy-MM-dd");
+        return dateParser(checkin,"yyyy/MM/dd");
     }
 
     public String getCheckout() {
-        return dateParser(checkout,"yyyy-MM-dd");
+        return dateParser(checkout,"yyyy/MM/dd");
     };
 
     public Long getChildren() {

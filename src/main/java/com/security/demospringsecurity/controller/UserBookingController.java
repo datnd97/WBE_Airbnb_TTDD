@@ -7,6 +7,8 @@ import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
+import com.security.demospringsecurity.util.DateToMilisecond;
+import com.security.demospringsecurity.util.StringToDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -55,4 +59,22 @@ public class UserBookingController {
         bookingService.save(booking);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBookingUser(@PathVariable Long id) throws ParseException {
+        Optional<Booking> booking = bookingService.findById(id);
+        booking.get().setCancelled(Boolean.TRUE);
+        String checkin = booking.get().getCheckin();
+        String checkout = booking.get().getCheckout();
+        int totalDays = DateToMilisecond.totalDay(checkin,checkout);
+        if (booking != null && totalDays!= 1) {
+            if(totalDays == 0){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            bookingService.delete(id);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 }

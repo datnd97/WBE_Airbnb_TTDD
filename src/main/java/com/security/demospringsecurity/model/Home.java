@@ -3,6 +3,7 @@ package com.security.demospringsecurity.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 import org.apache.catalina.Store;
 import org.jboss.logging.Field;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "home")
+@Data
 public class Home {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,13 @@ public class Home {
     @OneToMany(targetEntity = Booking.class)
     private List<Booking> booking;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
+    private List<Home> homes;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Image.class,mappedBy = "home",cascade = CascadeType.ALL)
+    private List<Image> images;
 
     public Home() {
     }

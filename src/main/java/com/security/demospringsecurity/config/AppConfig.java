@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.format.FormatterRegistry;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
@@ -37,86 +39,18 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-//@EnableTransactionManagement
-//@ComponentScan("com.security.demospringsecurity")
-//@EnableJpaRepositories("com.security.demospringsecurity.repository")
-//@EnableSpringDataWebSupport
+
 public class AppConfig implements WebMvcConfigurer {
+    @Autowired
+    Environment ev;
+
+    @Override
+    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+        String uploadPath = ev.getProperty("uploadPath");
+        registry.addResourceHandler("/file/**").addResourceLocations("file:" + uploadPath);
+    }
 
 
 
-//
-//    @Bean
-//    public MessageSource messageSource() {
-//        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-//        messageSource.setBasenames("ValidationMessages");
-//        return messageSource;
-//    }
-
-    //Thymeleaf Configuration
-//    @Bean
-//    public SpringResourceTemplateResolver templateResolver() {
-//        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-//        templateResolver.setApplicationContext(applicationContext);
-//        templateResolver.setPrefix("/WEB-INF/views/");
-//        templateResolver.setSuffix(".html");
-//        templateResolver.setTemplateMode(TemplateMode.HTML);
-//        return templateResolver;
-//    }
-//
-//    @Bean
-//    public TemplateEngine templateEngine() {
-//        TemplateEngine templateEngine = new SpringTemplateEngine();
-//        templateEngine.setTemplateResolver(templateResolver());
-//        return templateEngine;
-//    }
-//
-//    @Bean
-//    public ThymeleafViewResolver viewResolver() {
-//        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
-//        viewResolver.setTemplateEngine(templateEngine());
-//        return viewResolver;
-//    }
-//
-//    @Bean
-//    @Qualifier(value = "entityManager")
-//    public EntityManager entityManager(EntityManagerFactory entityManagerFactory) {
-//        return entityManagerFactory.createEntityManager();
-//    }
-//
-//    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-//        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-//        em.setDataSource(dataSource());
-//        em.setPackagesToScan("com.security.demospringsecurity.model");
-//
-//        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//        em.setJpaVendorAdapter(vendorAdapter);
-//        em.setJpaProperties(additionalProperties());
-//        return em;
-//    }
-//
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/test_security");
-//        dataSource.setUsername("root");
-//        dataSource.setPassword("123456");
-//        return dataSource;
-//    }
-//
-//    @Bean
-//    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-//        JpaTransactionManager transactionManager = new JpaTransactionManager();
-//        transactionManager.setEntityManagerFactory(emf);
-//        return transactionManager;
-//    }
-//
-//    Properties additionalProperties() {
-//        Properties properties = new Properties();
-//        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-//        return properties;
 }
 

@@ -7,9 +7,11 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface HomeRepository extends PagingAndSortingRepository<Home,Long> {
     Iterable<Home> findAllByName(String name);
     Home findByBooking(Booking booking);
+    List<Home> findAllByPriceBetween(Double min,Double max);
 }

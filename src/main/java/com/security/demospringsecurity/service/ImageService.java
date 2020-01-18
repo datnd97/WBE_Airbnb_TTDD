@@ -13,5 +13,5 @@ public interface ImageService {
 
     void delete(Long id);
 
-//    Iterable<Image> findImagesByAlbumId(Long id);
+    Iterable<Image> findByIdHome(Long id);
 }

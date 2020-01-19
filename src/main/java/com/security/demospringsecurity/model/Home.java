@@ -39,16 +39,14 @@ public class Home {
     @OneToMany(targetEntity = Booking.class)
     private List<Booking> booking;
 
-    @JsonIgnore
-    @OneToMany(targetEntity = Home.class,mappedBy = "typeHome",cascade = CascadeType.ALL)
-    private List<Home> homes;
+    @ManyToOne
+    private User user;
 
     @JsonIgnore
     @OneToMany(targetEntity = Image.class,mappedBy = "home",cascade = CascadeType.ALL)
     private List<Image> images;
 
-    public Home() {
-    }
+
 
     @Lob
     private String description;
@@ -56,91 +54,5 @@ public class Home {
     private Boolean status;
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Integer getBedroom() {
-        return bedroom;
-    }
-
-    public void setBedroom(Integer bedroom) {
-        this.bedroom = bedroom;
-    }
-
-    public Integer getBathroom() {
-        return bathroom;
-    }
-
-    public void setBathroom(Integer bathroom) {
-        this.bathroom = bathroom;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public TypeHome getTypeHome() {
-        return typeHome;
-    }
-
-    public void setTypeHome(TypeHome typeHome) {
-        this.typeHome = typeHome;
-    }
-
-    public TypeRoom getTypeRoom() {
-        return typeRoom;
-    }
-
-    public void setTypeRoom(TypeRoom typeRoom) {
-        this.typeRoom = typeRoom;
-    }
-
-    public List<Booking> getBooking() {
-        return booking;
-    }
-
-    public void setBooking(List<Booking> booking) {
-        this.booking = booking;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
 }

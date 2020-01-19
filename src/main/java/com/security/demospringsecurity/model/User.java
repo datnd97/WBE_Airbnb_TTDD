@@ -59,4 +59,7 @@ public class User{
     @OneToMany(targetEntity = Comment.class,mappedBy = "user",cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @JsonIgnore
+    @OneToMany(targetEntity = Home.class,mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Home> homes;
 }

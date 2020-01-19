@@ -3,6 +3,7 @@ package com.security.demospringsecurity.service;
 import com.security.demospringsecurity.model.Home;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -12,7 +13,7 @@ public interface HomeService {
     Home save(Home home);
     void delete(Long id);
     Iterable<Home> findAllByName(String name);
-
+    List<Home> findAllByUserId(Long id);
     //    @Select({"select", SELECT_FIELDS, "from", TABLE_NAEM, "where id=#{id}"})
 //    Article selectById(int id);
 

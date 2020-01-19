@@ -31,9 +31,6 @@ public class HomeController {
     private HomeService homeService;
 
     @Autowired
-    private HomeRepository homeRepository;
-
-    @Autowired
     private ImageService imageService;
 
     @GetMapping
@@ -60,9 +57,6 @@ public class HomeController {
 //        return new ResponseEntity<>(listImage, HttpStatus.OK);
 //    }
 
-//    @GetMapping("/cars")
-//    public ResponseEntity<List<Home>> searchForCars(@SearchSpec Specification<Home> specs) {
-//        return new ResponseEntity<>(homeRepository.findAll(Specification.where(specs)), HttpStatus.OK);
-//    }
+
 
 }

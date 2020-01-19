@@ -45,6 +45,15 @@ public class HostController {
         homeService.save(home);
         return new ResponseEntity<>(home, HttpStatus.CREATED);
     }
+    @GetMapping("/{id}/list-home-by-host")
+    public ResponseEntity<?> listHomeByHost( @PathVariable Long id) {
+        List<Home> homes = (List<Home>) homeService.findAllByUserId(id);
+        if (homes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(homes, HttpStatus.OK);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHome(@PathVariable Long id, @RequestBody Home home) {
@@ -96,4 +105,5 @@ public class HostController {
         Iterable<Image> listImage = imageService.findByIdHome(id);
         return new ResponseEntity<>(listImage, HttpStatus.OK);
     }
+
 }

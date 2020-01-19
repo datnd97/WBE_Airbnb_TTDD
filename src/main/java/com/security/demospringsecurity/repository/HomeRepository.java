@@ -15,4 +15,5 @@ public interface HomeRepository extends JpaRepository<Home,Long>, JpaSpecificati
     Iterable<Home> findAllByName(String name);
     Home findByBooking(Booking booking);
     List<Home> findAllByPriceBetween(Double min,Double max);
+    List<Home> findAllByUserId(Long id);
 }

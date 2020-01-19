@@ -11,21 +11,19 @@ import java.util.Date;
 
 @Entity
 @Table(name = "comment")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt"},
-        allowGetters = true)
 @Data
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   private String name;
-   private String content;
-   private Long parent_id;
+    @Column(columnDefinition = "long")
+    private String content;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
+    @ManyToOne
+    private User user;
+
+
+
+
 }

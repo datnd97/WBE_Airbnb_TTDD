@@ -46,6 +46,7 @@ public class TypeRoomController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentType.get().setName(type.getName());
+        typeRoomService.save(currentType.get());
         return new ResponseEntity<>(currentType.get(),HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")

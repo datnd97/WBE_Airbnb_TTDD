@@ -42,16 +42,17 @@ public class TypeHomeController {
         typeHomeService.save(type);
         return new ResponseEntity<>(type,HttpStatus.CREATED);
     }
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateType(@PathVariable Long id,@RequestBody TypeHome type) {
         Optional<TypeHome> currentType = typeHomeService.findById(id);
         if(!currentType.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         currentType.get().setName(type.getName());
+        typeHomeService.save(currentType.get());
         return new ResponseEntity<>(currentType.get(),HttpStatus.CREATED);
     }
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteType(@PathVariable Long id) {
         Optional<TypeHome> type = typeHomeService.findById(id);
         if(type.isPresent()) {

@@ -48,6 +48,7 @@ public class HostController {
         Long id = getCurrentUser().getId();
         User user = userService.findById(id);
         home.setUser(user);
+        home.setIsBooking(Boolean.FALSE);
         homeService.save(home);
         return new ResponseEntity<>(home, HttpStatus.CREATED);
     }

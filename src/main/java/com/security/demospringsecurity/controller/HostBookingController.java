@@ -4,6 +4,7 @@ import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.User;
 import com.security.demospringsecurity.repository.BookingRepository;
+import com.security.demospringsecurity.repository.HomeRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
@@ -18,6 +19,7 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +43,8 @@ public class HostBookingController {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @Autowired
+    private HomeRepository homeRepository;
 
     @GetMapping
     public ResponseEntity<?> listBooking() {
@@ -61,11 +65,13 @@ public class HostBookingController {
 
     @GetMapping("/list-booking-host")
     public ResponseEntity<?> listBookingByHost() {
+        List<Booking> result = new ArrayList<>();
         Long userId = getCurrentUser().getId();
-        List<Booking> bookingList = this.bookingRepository.findBookingByCancelledAndUserId(Boolean.FALSE, userId);
-        if (bookingList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        List<Home> homes = homeRepository.findAllByIsBookingAndUserId(Boolean.TRUE,userId);
+        for (Home home: homes) {
+            Booking booking = bookingRepository.findBookingByHome(home);
+            result.add(booking);
         }
-        return new ResponseEntity<>(bookingList, HttpStatus.OK);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }

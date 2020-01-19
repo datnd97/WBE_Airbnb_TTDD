@@ -49,13 +49,16 @@ public class UserBookingController {
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) {
         Home home = homeService.findById(id);
+        home.setIsBooking(Boolean.TRUE);
         booking.setCancelled(Boolean.FALSE);
         booking.setHome(home);
         Date now = new Date();
         booking.setTimeNow(now);
         User user = userService.findById(getCurrentUser().getId());
         booking.setUser(user);
+
         bookingService.save(booking);
+        homeService.save(home);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")

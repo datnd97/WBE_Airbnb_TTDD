@@ -16,4 +16,5 @@ public interface HomeRepository extends JpaRepository<Home,Long>, JpaSpecificati
     Home findByBooking(Booking booking);
     List<Home> findAllByPriceBetween(Double min,Double max);
     List<Home> findAllByUserId(Long id);
+    List<Home> findAllByIsBookingAndUserId(Boolean status,Long id);
 }

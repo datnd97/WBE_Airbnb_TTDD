@@ -35,6 +35,7 @@ public class Home {
     private TypeHome typeHome;
     @ManyToOne
     private TypeRoom typeRoom;
+
     @JsonIgnore
     @OneToMany(targetEntity = Booking.class)
     private List<Booking> booking;
@@ -46,6 +47,8 @@ public class Home {
     @OneToMany(targetEntity = Image.class,mappedBy = "home",cascade = CascadeType.ALL)
     private List<Image> images;
 
+//    @JsonIgnore
+    private Boolean isBooking;
 
 
     @Lob

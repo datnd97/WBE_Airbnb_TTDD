@@ -2,10 +2,12 @@ package com.security.demospringsecurity.controller;
 
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.Image;
+import com.security.demospringsecurity.model.User;
 import com.security.demospringsecurity.repository.ImageRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.ImageService;
+import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -39,14 +41,19 @@ public class HostController {
     @Autowired
     private HomeService homeService;
 
+    @Autowired
+    private UserService userService;
     @PostMapping("/create-home")
     public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
-
+        Long id = getCurrentUser().getId();
+        User user = userService.findById(id);
+        home.setUser(user);
         homeService.save(home);
         return new ResponseEntity<>(home, HttpStatus.CREATED);
     }
-    @GetMapping("/{id}/list-home-by-host")
-    public ResponseEntity<?> listHomeByHost( @PathVariable Long id) {
+    @GetMapping("/list-home-by-host")
+    public ResponseEntity<?> listHomeByHost() {
+        Long id = getCurrentUser().getId();
         List<Home> homes = (List<Home>) homeService.findAllByUserId(id);
         if (homes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

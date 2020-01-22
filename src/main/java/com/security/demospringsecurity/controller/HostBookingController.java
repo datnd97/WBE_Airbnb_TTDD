@@ -57,20 +57,27 @@ public class HostBookingController {
     public ResponseEntity<?> deleteHost(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
         booking.get().setCancelled(Boolean.TRUE);
+
         if (booking != null) {
             bookingService.delete(id);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
     @GetMapping("/list-booking-host")
     public ResponseEntity<?> listBookingByHost() {
         List<Booking> result = new ArrayList<>();
         Long userId = getCurrentUser().getId();
         List<Home> homes = homeRepository.findAllByIsBookingAndUserId(Boolean.TRUE,userId);
-        for (Home home: homes) {
-            Booking booking = bookingRepository.findBookingByHome(home);
-            result.add(booking);
+        if(homes.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        for(Home home: homes) {
+            Booking booking = bookingRepository.findBookingByHomeId(home.getId());
+            if (booking == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            } else {
+                result.add(booking);
+            }
         }
         return new ResponseEntity<>(result,HttpStatus.OK);
     }

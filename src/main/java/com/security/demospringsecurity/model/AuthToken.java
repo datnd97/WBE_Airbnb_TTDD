@@ -8,6 +8,7 @@ public class AuthToken {
     private Long id;
     private String token;
     private String role;
+    private String name;
     private Collection<? extends GrantedAuthority> authorities;
     public AuthToken() {
 
@@ -39,7 +40,20 @@ public class AuthToken {
         this.id = id;
     }
 
+    public AuthToken(Long id, String name, String token, String authority) {
+        this.token = token;
+        this.name = name;
+        this.role = authority;
+        this.id = id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getToken() {
         return token;

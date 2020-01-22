@@ -80,12 +80,13 @@ public class UserController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = jwtTokenUtil.generateJwtToken(authentication);
+
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         GrantedAuthority roleName = null;
         if (authentication.getAuthorities().size() > 0) {
             roleName = authentication.getAuthorities().iterator().next();
         }
-        return ResponseEntity.ok(new AuthToken(userPrinciple.getId(),token,roleName.getAuthority()));
+        return ResponseEntity.ok(new AuthToken(userPrinciple.getId(),userPrinciple.getName(),token,roleName.getAuthority()));
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)

@@ -18,5 +18,5 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
 //    Booking findAllByCheckinAfterAndAndCheckout(Date checkin,Date checkout);
     List<Booking> findBookingByUserId(Long id);
     List<Booking> findBookingByCancelledAndUserId(Boolean status,Long id);
-    Booking  findBookingByHome(Home home);
+    Booking findBookingByHomeId(Long id);
 }

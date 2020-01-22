@@ -5,6 +5,7 @@ import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.Result;
 import com.security.demospringsecurity.model.User;
+import com.security.demospringsecurity.repository.HomeRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
@@ -34,6 +35,8 @@ public class UserBookingController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HomeRepository homeRepository;
     @GetMapping("/list-booking-user")
     public ResponseEntity<?> listBookingByUser() {
         Long userId = getCurrentUser().getId();
@@ -62,9 +65,10 @@ public class UserBookingController {
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Result<String>> deleteBookingUser(@PathVariable Long id) throws ParseException {
+    public ResponseEntity<?> deleteBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
         booking.get().setCancelled(Boolean.TRUE);
+        booking.get().getHome().setIsBooking(Boolean.FALSE);
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
@@ -73,12 +77,11 @@ public class UserBookingController {
         result.setSuccess("That bai");
         if (booking != null && totalDays!= 1) {
             if(totalDays == 0){
-                return new ResponseEntity<Result<String>>(result, HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(new ResponseMessage("No Delete Before 1 Day"), HttpStatus.BAD_REQUEST);
             }
             bookingService.delete(id);
         }
-
-        return new ResponseEntity<Result<String>>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

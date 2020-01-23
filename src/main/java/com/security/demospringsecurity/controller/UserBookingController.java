@@ -5,12 +5,14 @@ import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
 import com.security.demospringsecurity.model.Result;
 import com.security.demospringsecurity.model.User;
+import com.security.demospringsecurity.repository.BookingRepository;
 import com.security.demospringsecurity.repository.HomeRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
 import com.security.demospringsecurity.util.DateToMilisecond;
+import com.security.demospringsecurity.util.StringToDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,8 @@ public class UserBookingController {
 
     @Autowired
     private HomeRepository homeRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
     @GetMapping("/list-booking-user")
     public ResponseEntity<?> listBookingByUser() {
         Long userId = getCurrentUser().getId();
@@ -50,8 +54,20 @@ public class UserBookingController {
     @RequestMapping(value = "create/{id}",method = RequestMethod.POST
             ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) {
+    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) throws ParseException {
+        List booking1 =  bookingService.findBookingByUserId(getCurrentUser().getId());
         Home home = homeService.findById(id);
+        Booking bookingCurrent = bookingRepository.findBookingByHome(home);
+        for(Object booking2: booking1) {
+            if(booking2.equals(bookingCurrent) ) {
+                String checkIn = booking.getCheckin();
+                String checkOut = booking.getCheckout();
+                bookingCurrent.setCheckin(StringToDate.parsingDate(checkIn));
+                bookingCurrent.setCheckout(StringToDate.parsingDate(checkOut));
+                bookingService.save(bookingCurrent);
+                return new ResponseEntity<>(bookingCurrent,HttpStatus.OK);
+            }
+        }
         home.setIsBooking(Boolean.TRUE);
         booking.setCancelled(Boolean.FALSE);
         booking.setHome(home);

@@ -41,6 +41,7 @@ public class Booking {
     @ManyToOne
     private Home home;
 
+
     @ManyToOne
     User user;
 

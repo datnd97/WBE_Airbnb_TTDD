@@ -64,11 +64,10 @@ public class UserBookingController {
         homeService.save(home);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
-    @DeleteMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> deleteBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
-        booking.get().setCancelled(Boolean.TRUE);
-        booking.get().getHome().setIsBooking(Boolean.FALSE);
+
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
@@ -79,7 +78,9 @@ public class UserBookingController {
             if(totalDays == 0){
                 return new ResponseEntity<>(new ResponseMessage("No Delete Before 1 Day"), HttpStatus.BAD_REQUEST);
             }
-            bookingService.delete(id);
+            booking.get().setCancelled(Boolean.TRUE);
+            booking.get().getHome().setIsBooking(Boolean.FALSE);
+            bookingService.save(booking.get());
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

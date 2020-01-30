@@ -42,7 +42,9 @@ public class UserBookingController {
     @GetMapping("/list-booking-user")
     public ResponseEntity<?> listBookingByUser() {
         Long userId = getCurrentUser().getId();
-        List<Booking> bookingList = this.bookingService.findBookingByUserId(userId);
+        List<Booking> bookingList = bookingService.findBookingByUserId(userId);
+//        User user = userService.findById(userId);
+//        List<Booking> bookingList = bookingRepository.findAllByUser(user);
         if(bookingList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

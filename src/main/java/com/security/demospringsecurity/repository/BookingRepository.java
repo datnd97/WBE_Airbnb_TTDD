@@ -15,5 +15,6 @@ import java.util.List;
 public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking> findBookingByUserId(Long id);
     Booking  findBookingByHome(Home home);
+    List<Booking> findAllByUser(User user);
 
 }

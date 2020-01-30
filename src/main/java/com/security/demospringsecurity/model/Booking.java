@@ -43,7 +43,7 @@ public class Booking {
 
 
     @ManyToOne
-    User user;
+    private User user;
 
     private Date timeNow;
 

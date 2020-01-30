@@ -3,6 +3,7 @@ package com.security.demospringsecurity.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.apache.catalina.Store;
 import org.jboss.logging.Field;
@@ -41,6 +42,7 @@ public class Home {
     private List<Booking> booking;
 
     @ManyToOne
+    @JsonProperty
     private User user;
 
     @JsonIgnore

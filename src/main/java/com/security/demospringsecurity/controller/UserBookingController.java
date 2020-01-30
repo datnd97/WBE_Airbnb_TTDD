@@ -10,6 +10,7 @@ import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
+import com.security.demospringsecurity.util.BooleanDate;
 import com.security.demospringsecurity.util.DateToMilisecond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class UserBookingController {
     private UserPrinciple getCurrentUser() {
         return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
     @Autowired
     private BookingService bookingService;
     @Autowired
@@ -39,12 +41,12 @@ public class UserBookingController {
     private HomeRepository homeRepository;
     @Autowired
     private BookingRepository bookingRepository;
+
+
     @GetMapping("/list-booking-user")
     public ResponseEntity<?> listBookingByUser() {
         Long userId = getCurrentUser().getId();
-        List<Booking> bookingList = bookingService.findBookingByUserId(userId);
-//        User user = userService.findById(userId);
-//        List<Booking> bookingList = bookingRepository.findAllByUser(user);
+        List<Booking> bookingList = this.bookingService.findBookingByUserId(userId);
         if(bookingList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -76,22 +78,29 @@ public class UserBookingController {
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBookingUser(@PathVariable Long id) throws ParseException {
+    public ResponseEntity<ResponseMessage> deleteBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
 
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
-        if (booking != null && totalDays!= 1) {
+        boolean status = BooleanDate.afterBefore(checkin,checkout);
+        if (status && booking != null && totalDays!= 1) {
             if(totalDays == 0){
-                return new ResponseEntity<>(new ResponseMessage("No Delete Before 1 Day"), HttpStatus.BAD_REQUEST);
-            }
+                return new ResponseEntity<ResponseMessage>(
+                        new ResponseMessage(false, "Cannot cancel the booking", null),
+                        HttpStatus.OK);            }
             booking.get().setCancelled(Boolean.TRUE);
             booking.get().getHome().setIsBooking(Boolean.FALSE);
             bookingService.save(booking.get());
+            bookingService.delete(id);
+            return new ResponseEntity<ResponseMessage>(
+                    new ResponseMessage(true, "Confirm booking cancel", null),
+                    HttpStatus.OK);
         }
-        bookingService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<ResponseMessage>(
+                new ResponseMessage(false, "Cannot cancel the booking", null),
+                HttpStatus.OK);
     }
 
 

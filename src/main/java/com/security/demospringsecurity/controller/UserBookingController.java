@@ -3,7 +3,6 @@ package com.security.demospringsecurity.controller;
 import com.security.demospringsecurity.message.response.ResponseMessage;
 import com.security.demospringsecurity.model.Booking;
 import com.security.demospringsecurity.model.Home;
-import com.security.demospringsecurity.model.Result;
 import com.security.demospringsecurity.model.User;
 import com.security.demospringsecurity.repository.BookingRepository;
 import com.security.demospringsecurity.repository.HomeRepository;
@@ -12,7 +11,6 @@ import com.security.demospringsecurity.service.BookingService;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
 import com.security.demospringsecurity.util.DateToMilisecond;
-import com.security.demospringsecurity.util.StringToDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,20 +52,15 @@ public class UserBookingController {
     @RequestMapping(value = "create/{id}",method = RequestMethod.POST
             ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) throws ParseException {
-        List booking1 =  bookingService.findBookingByUserId(getCurrentUser().getId());
+    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) {
+//        List booking1 =  bookingService.findBookingByUserId(getCurrentUser().getId());
         Home home = homeService.findById(id);
-        Booking bookingCurrent = bookingRepository.findBookingByHome(home);
-        for(Object booking2: booking1) {
-            if(booking2.equals(bookingCurrent) ) {
-                String checkIn = booking.getCheckin();
-                String checkOut = booking.getCheckout();
-                bookingCurrent.setCheckin(StringToDate.parsingDate(checkIn));
-                bookingCurrent.setCheckout(StringToDate.parsingDate(checkOut));
-                bookingService.save(bookingCurrent);
-                return new ResponseEntity<>(bookingCurrent,HttpStatus.OK);
-            }
-        }
+//        Booking bookingCurrent = bookingRepository.findBookingByHome(home);
+//        for(Object booking2: booking1) {
+//            if(booking2.equals(bookingCurrent) ) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//        }
         home.setIsBooking(Boolean.TRUE);
         booking.setCancelled(Boolean.FALSE);
         booking.setHome(home);
@@ -87,9 +80,6 @@ public class UserBookingController {
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
-        Result<String> result = new Result<>();
-        result.setData("Khong the xoa 1 ngay");
-        result.setSuccess("That bai");
         if (booking != null && totalDays!= 1) {
             if(totalDays == 0){
                 return new ResponseEntity<>(new ResponseMessage("No Delete Before 1 Day"), HttpStatus.BAD_REQUEST);

@@ -12,6 +12,6 @@ public interface CommentService {
     Comment save(Comment Comment);
     void delete(Long id);
     List<Comment> findCommentByUserId(Long id);
-
+    List<Comment> findAllByHomeId(Long id);
 
 }

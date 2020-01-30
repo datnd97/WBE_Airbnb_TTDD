@@ -56,6 +56,8 @@ public class Home {
 
     private Boolean status;
 
-
+    @JsonIgnore
+    @OneToMany(targetEntity = Comment.class,mappedBy = "home",cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
 }

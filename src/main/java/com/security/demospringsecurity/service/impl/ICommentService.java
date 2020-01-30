@@ -37,4 +37,9 @@ public class ICommentService implements CommentService {
     public List<Comment> findCommentByUserId(Long id) {
         return null;
     }
+
+    @Override
+    public List<Comment> findAllByHomeId(Long id) {
+        return commentRepository.findAllByHomeId(id);
+    }
 }

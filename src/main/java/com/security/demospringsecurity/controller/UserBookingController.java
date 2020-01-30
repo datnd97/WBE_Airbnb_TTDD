@@ -73,7 +73,7 @@ public class UserBookingController {
         homeService.save(home);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
 
@@ -88,6 +88,7 @@ public class UserBookingController {
             booking.get().getHome().setIsBooking(Boolean.FALSE);
             bookingService.save(booking.get());
         }
+        bookingService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

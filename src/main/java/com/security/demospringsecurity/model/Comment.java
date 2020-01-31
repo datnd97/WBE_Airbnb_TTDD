@@ -26,6 +26,4 @@ public class Comment {
     @ManyToOne
     private Home home;
 
-
-
 }

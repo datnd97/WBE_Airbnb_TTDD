@@ -3,11 +3,14 @@ package com.security.demospringsecurity.controller;
 import com.security.demospringsecurity.message.response.ResponseMessage;
 import com.security.demospringsecurity.model.Comment;
 import com.security.demospringsecurity.model.Home;
+import com.security.demospringsecurity.model.TypeHome;
+import com.security.demospringsecurity.model.TypeRoom;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.CommentService;
 import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,5 +65,15 @@ public class CommentController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editComment(@PathVariable Long id,@RequestBody Comment comment) {
+        Optional<Comment> commentCurrent = commentService.findById(id);
+        if(commentCurrent.isPresent()) {
+            commentCurrent.get().setContent(comment.getContent());
+            commentService.save(commentCurrent.get());
+            return new ResponseEntity<>(commentCurrent.get(),HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,10 +1,7 @@
 package com.security.demospringsecurity.controller;
 
 import com.security.demospringsecurity.message.response.ResponseMessage;
-import com.security.demospringsecurity.model.Comment;
-import com.security.demospringsecurity.model.Home;
-import com.security.demospringsecurity.model.TypeHome;
-import com.security.demospringsecurity.model.TypeRoom;
+import com.security.demospringsecurity.model.*;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.CommentService;
 import com.security.demospringsecurity.service.HomeService;
@@ -48,7 +45,10 @@ public class CommentController {
         if(comment.getContent() == null || comment.getContent() == ""){
             return new ResponseEntity<ResponseMessage>(new ResponseMessage(false, "You have not comment this home!", null), HttpStatus.NO_CONTENT);
         }
-        comment.setUser(userService.findById(getCurrentUser().getId()));
+//        User user = userService.findById(getCurrentUser().getId());
+//        comment.setUser(user);
+
+
         Home home = homeService.findById(homeId);
         comment.setHome(home);
         commentService.save(comment);

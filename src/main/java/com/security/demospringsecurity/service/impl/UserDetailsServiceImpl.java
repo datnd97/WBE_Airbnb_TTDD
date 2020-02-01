@@ -34,6 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     @Autowired
     private BCryptPasswordEncoder bcryptEncoder;
 
+    @Autowired
+    private UserRepository userRepository;
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -67,6 +69,11 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         newUserRoles.setRoleId(user.getRoleId());
         userRolesRepository.save(newUserRoles);
         return newUser;
+    }
+
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     @Override

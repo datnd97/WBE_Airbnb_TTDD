@@ -1,12 +1,14 @@
 package com.security.demospringsecurity.controller;
 
 
+import com.security.demospringsecurity.message.request.UserForm;
 import com.security.demospringsecurity.message.response.JwtResponse;
 import com.security.demospringsecurity.model.*;
 import com.security.demospringsecurity.security.jwt.JwtProvider;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.access.annotation.Secured;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.ls.LSOutput;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -93,4 +96,18 @@ public class UserController {
     public User changepassword(@RequestBody UpdatePasswordDto user) {
         return userService.updatePassword(user);
     }
+
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserForm user) {
+        User user1 = userService.findById(id);
+//        if (user1 == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        user1.setName(user.getName());
+        userService.save(user1);
+        return new ResponseEntity<>(user1, HttpStatus.OK);
+    }
+
 }

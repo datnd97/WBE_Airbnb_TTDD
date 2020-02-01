@@ -45,10 +45,8 @@ public class CommentController {
         if(comment.getContent() == null || comment.getContent() == ""){
             return new ResponseEntity<ResponseMessage>(new ResponseMessage(false, "You have not comment this home!", null), HttpStatus.NO_CONTENT);
         }
-//        User user = userService.findById(getCurrentUser().getId());
-//        comment.setUser(user);
-
-
+        User user = userService.findById(getCurrentUser().getId());
+        comment.setUser(user);
         Home home = homeService.findById(homeId);
         comment.setHome(home);
         commentService.save(comment);

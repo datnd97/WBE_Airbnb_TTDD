@@ -48,7 +48,7 @@ public class UserBookingController {
         Long userId = getCurrentUser().getId();
         List<Booking> bookingList = this.bookingService.findBookingByUserId(userId);
         if(bookingList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(bookingList,HttpStatus.OK);
     }
@@ -56,15 +56,13 @@ public class UserBookingController {
     @RequestMapping(value = "create/{id}",method = RequestMethod.POST
             ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
-    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) {
-//        List booking1 =  bookingService.findBookingByUserId(getCurrentUser().getId());
+    public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) throws ParseException {
+        boolean status = BooleanDate.afterBefore(booking.getCheckin(),booking.getCheckout());
+        if(!status) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
         Home home = homeService.findById(id);
-//        Booking bookingCurrent = bookingRepository.findBookingByHome(home);
-//        for(Object booking2: booking1) {
-//            if(booking2.equals(bookingCurrent) ) {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//        }
         home.setIsBooking(Boolean.TRUE);
         booking.setCancelled(Boolean.FALSE);
         booking.setHome(home);
@@ -72,7 +70,6 @@ public class UserBookingController {
         booking.setTimeNow(now);
         User user = userService.findById(getCurrentUser().getId());
         booking.setUser(user);
-
         bookingService.save(booking);
         homeService.save(home);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
@@ -84,8 +81,7 @@ public class UserBookingController {
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
-        boolean status = BooleanDate.afterBefore(checkin,checkout);
-        if (status && booking != null && totalDays!= 1) {
+        if ( booking != null && totalDays!= 1) {
             if(totalDays == 0){
                 return new ResponseEntity<ResponseMessage>(
                         new ResponseMessage(false, "Cannot cancel the booking", null),

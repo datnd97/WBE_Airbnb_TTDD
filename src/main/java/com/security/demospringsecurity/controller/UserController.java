@@ -102,12 +102,17 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserForm user) {
         User user1 = userService.findById(id);
-//        if (user1 == null) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-        user1.setName(user.getName());
-        userService.save(user1);
-        return new ResponseEntity<>(user1, HttpStatus.OK);
+        if (user1 == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        try {
+            user1.setName(user.getName());
+            userService.save(user1);
+            return new ResponseEntity<>(user1, HttpStatus.OK);
+        }
+        catch (Exception e ) {
+            throw new RuntimeException("Fail!");
+        }
     }
 
 }

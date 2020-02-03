@@ -68,10 +68,7 @@ public class HostBookingController {
         List<Booking> result = new ArrayList<>();
         Long userId = getCurrentUser().getId();
         List<Home> homes = homeRepository.findAllByIsBookingAndUserId(Boolean.TRUE,userId);
-        for (Home home: homes) {
-            Booking booking = bookingRepository.findBookingByHome(home);
-            result.add(booking);
-        }
+        result = bookingRepository.findAllByHome(homes);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 

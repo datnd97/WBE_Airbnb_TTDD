@@ -48,11 +48,8 @@ public class Home {
     @JsonIgnore
     @OneToMany(targetEntity = Image.class,mappedBy = "home",cascade = CascadeType.ALL)
     private List<Image> images;
-
-//    @JsonIgnore
     private Boolean isBooking;
-
-
+    private Boolean isCheckin;
     @Lob
     private String description;
 

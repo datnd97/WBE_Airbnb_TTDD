@@ -18,4 +18,7 @@ public interface HomeRepository extends JpaRepository<Home,Long>, JpaSpecificati
     List<Home> findAllByUserId(Long id);
     List<Home> findAllByIsBookingAndUserId(Boolean status,Long id);
     Home findByBookingId(Long id);
+    List<Home> findAllByIsCheckin(Boolean isCheckIn);
+    List<Home> findAllByBooking(List<Booking> bookings);
+    List<Home> findAllByIsCheckinAndBooking(Boolean isCheckIn,List<Booking> bookings);
 }

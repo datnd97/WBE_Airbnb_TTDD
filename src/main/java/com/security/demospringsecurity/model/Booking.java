@@ -3,6 +3,8 @@ package com.security.demospringsecurity.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -38,7 +40,8 @@ public class Booking {
     @Lob
     private Boolean cancelled;
 
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE})
+    @NotFound(action = NotFoundAction.IGNORE)
     private Home home;
     @ManyToOne
     private User user;

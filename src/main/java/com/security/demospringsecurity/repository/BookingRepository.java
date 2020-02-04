@@ -18,6 +18,6 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     List<Booking>  findAllByHomeIn(List<Home> homes);
     List<Booking> findAllByUser(User user);
     Booking findByUserIdAndId(Long userId,Long bookingId);
-
+    List<Booking> findAllByHomeId(Long id);
 
 }

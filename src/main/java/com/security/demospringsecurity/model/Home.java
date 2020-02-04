@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 import lombok.Data;
 import org.apache.catalina.Store;
 import org.jboss.logging.Field;
@@ -38,7 +39,7 @@ public class Home {
     private TypeRoom typeRoom;
 
     @JsonIgnore
-    @OneToMany(targetEntity = Booking.class)
+    @OneToMany(targetEntity = Booking.class,orphanRemoval=true)
     private List<Booking> booking;
 
     @ManyToOne
@@ -60,4 +61,10 @@ public class Home {
     @OneToMany(targetEntity = Comment.class,mappedBy = "home",cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("User", user) //<----------- REMOVE THIS
+                .toString();
+    }
 }

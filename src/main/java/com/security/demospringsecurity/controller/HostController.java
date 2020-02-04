@@ -1,13 +1,10 @@
 package com.security.demospringsecurity.controller;
 
-import com.security.demospringsecurity.model.Home;
-import com.security.demospringsecurity.model.Image;
-import com.security.demospringsecurity.model.User;
+import com.security.demospringsecurity.model.*;
+import com.security.demospringsecurity.repository.BookingRepository;
 import com.security.demospringsecurity.repository.ImageRepository;
 import com.security.demospringsecurity.security.service.UserPrinciple;
-import com.security.demospringsecurity.service.HomeService;
-import com.security.demospringsecurity.service.ImageService;
-import com.security.demospringsecurity.service.UserService;
+import com.security.demospringsecurity.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -42,7 +39,13 @@ public class HostController {
     private HomeService homeService;
 
     @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
     private UserService userService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private BookingService bookingService;
     @PostMapping("/create-home")
     public ResponseEntity<?> createHome(@Valid @RequestBody Home home) {
         Long id = getCurrentUser().getId();
@@ -86,6 +89,19 @@ public class HostController {
     public ResponseEntity<?> deleteHome(@PathVariable Long id) {
         Home home = homeService.findById(id);
         if (home != null) {
+            List<Booking> bookings = bookingRepository.findAllByHomeId(id);
+            List<Comment> comments = commentService.findAllByHomeId(id);
+
+            if(!bookings.isEmpty()) {
+                for (Booking booking : bookings) {
+                    bookingService.delete(booking.getId());
+                }
+            }
+            if(!comments.isEmpty()) {
+                for (Comment comment : comments) {
+                    commentService.delete(comment.getId());
+                }
+            }
             homeService.delete(id);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

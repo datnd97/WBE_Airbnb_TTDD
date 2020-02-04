@@ -61,7 +61,6 @@ public class UserBookingController {
         if(!status) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         Home home = homeService.findById(id);
         home.setIsBooking(Boolean.TRUE);
         booking.setCancelled(Boolean.FALSE);
@@ -75,9 +74,8 @@ public class UserBookingController {
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseMessage> deleteBookingUser(@PathVariable Long id) throws ParseException {
+    public ResponseEntity<ResponseMessage> cancelBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);
-
         String checkin = booking.get().getCheckin();
         String checkout = booking.get().getCheckout();
         int totalDays = DateToMilisecond.totalDay(checkin,checkout);
@@ -89,7 +87,6 @@ public class UserBookingController {
             booking.get().setCancelled(Boolean.TRUE);
             booking.get().getHome().setIsBooking(Boolean.FALSE);
             bookingService.save(booking.get());
-            bookingService.delete(id);
             return new ResponseEntity<ResponseMessage>(
                     new ResponseMessage(true, "Confirm booking cancel", null),
                     HttpStatus.OK);

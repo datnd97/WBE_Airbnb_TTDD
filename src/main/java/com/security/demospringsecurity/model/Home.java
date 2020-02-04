@@ -49,6 +49,7 @@ public class Home {
     @OneToMany(targetEntity = Image.class,mappedBy = "home",cascade = CascadeType.ALL)
     private List<Image> images;
     private Boolean isBooking;
+
     private Boolean isCheckin;
     @Lob
     private String description;

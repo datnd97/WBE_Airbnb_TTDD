@@ -67,8 +67,11 @@ public class HostBookingController {
     public ResponseEntity<?> listBookingByHost() {
         List<Booking> result = new ArrayList<>();
         Long userId = getCurrentUser().getId();
-        List<Home> homes = homeRepository.findAllByIsBookingAndUserId(Boolean.TRUE,userId);
-        result = bookingRepository.findAllByHome(homes);
+        List<Home> homes = homeRepository.findAllByUserId(userId);
+        if(homes == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        result = bookingRepository.findAllByHomeIn(homes);
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 

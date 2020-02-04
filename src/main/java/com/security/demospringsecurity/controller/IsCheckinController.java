@@ -49,11 +49,18 @@ public class IsCheckinController {
     }
     @GetMapping("/list-home-checkin")
     public ResponseEntity<?> listHomeCheckIn() {
-        List<Booking> bookingList = this.bookingService.findBookingByUserId(getCurrentUser().getId());
-        List<Home> homes = homeRepository.findAllByIsCheckinAndBooking(Boolean.TRUE,bookingList);
+        Long id = getCurrentUser().getId();
+        User user = userService.findById(id);
+        List<Booking> bookings = bookingRepository.findAllByUser(user);
+        ArrayList<Home> homes = new ArrayList<Home>();
+        for(int i = 0 ; i < bookings.size(); i++) {
+            homes.add(bookings.get(i).getHome());
+        }
+
         if (homes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(homes, HttpStatus.OK);
+
     }
 }

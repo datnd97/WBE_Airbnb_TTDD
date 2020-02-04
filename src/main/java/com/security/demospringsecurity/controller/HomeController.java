@@ -51,12 +51,4 @@ public class HomeController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-//    @GetMapping("/images")
-//    public ResponseEntity<?> getListImage() {
-//        Iterable<Image> listImage = imageService.findAll();
-//        return new ResponseEntity<>(listImage, HttpStatus.OK);
-//    }
-
-
-
 }

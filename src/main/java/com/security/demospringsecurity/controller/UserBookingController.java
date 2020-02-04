@@ -12,6 +12,7 @@ import com.security.demospringsecurity.service.HomeService;
 import com.security.demospringsecurity.service.UserService;
 import com.security.demospringsecurity.util.BooleanDate;
 import com.security.demospringsecurity.util.DateToMilisecond;
+import com.security.demospringsecurity.util.SameDayDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,22 +58,24 @@ public class UserBookingController {
             ,produces = {MimeTypeUtils.APPLICATION_JSON_VALUE},
             consumes = {MimeTypeUtils.APPLICATION_JSON_VALUE})
     public ResponseEntity<?> createBooking(@PathVariable("id") Long id, @RequestBody Booking booking) throws ParseException {
-        boolean status = BooleanDate.afterBefore(booking.getCheckin(),booking.getCheckout());
-        if(!status) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        boolean status = BooleanDate.afterBefore(booking.getCheckin(), booking.getCheckout());
+        boolean sameday = SameDayDate.sameDay(booking.getCheckin(), booking.getCheckout());
+        if (sameday || status) {
+            Home home = homeService.findById(id);
+            home.setIsBooking(Boolean.TRUE);
+            booking.setCancelled(Boolean.FALSE);
+            booking.setHome(home);
+            Date now = new Date();
+            booking.setTimeNow(now);
+            User user = userService.findById(getCurrentUser().getId());
+            booking.setUser(user);
+            bookingService.save(booking);
+            homeService.save(home);
+            return new ResponseEntity<>(booking, HttpStatus.CREATED);
         }
-        Home home = homeService.findById(id);
-        home.setIsBooking(Boolean.TRUE);
-        booking.setCancelled(Boolean.FALSE);
-        booking.setHome(home);
-        Date now = new Date();
-        booking.setTimeNow(now);
-        User user = userService.findById(getCurrentUser().getId());
-        booking.setUser(user);
-        bookingService.save(booking);
-        homeService.save(home);
-        return new ResponseEntity<>(booking, HttpStatus.CREATED);
-    }
+        return new ResponseEntity<ResponseMessage>(
+                new ResponseMessage(false, "Fail. Wrong Day", null),
+                HttpStatus.OK);    }
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseMessage> cancelBookingUser(@PathVariable Long id) throws ParseException {
         Optional<Booking> booking = bookingService.findById(id);

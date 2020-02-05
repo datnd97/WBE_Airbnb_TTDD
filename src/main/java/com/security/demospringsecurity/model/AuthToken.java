@@ -9,6 +9,7 @@ public class AuthToken {
     private String token;
     private String role;
     private String name;
+    private String username;
     private Collection<? extends GrantedAuthority> authorities;
     public AuthToken() {
 
@@ -39,12 +40,12 @@ public class AuthToken {
         this.role = authority;
         this.id = id;
     }
-
-    public AuthToken(Long id, String name, String token, String authority) {
+    public AuthToken(Long id, String name, String token, String authority,String username) {
         this.token = token;
         this.name = name;
         this.role = authority;
         this.id = id;
+        this.username = username;
     }
 
     public String getName() {
@@ -85,5 +86,13 @@ public class AuthToken {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

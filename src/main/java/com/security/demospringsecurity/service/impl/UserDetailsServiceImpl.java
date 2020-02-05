@@ -103,21 +103,5 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         return (List<Role>) rolesRepository.findAll();
     }
 
-    @Override
-    public User updatePassword(UpdatePasswordDto user) {
-        User currentUser = userDao.findByUsername(user.getUsername());
-        if (currentUser != null) {
-            String username = currentUser.getUsername();
-            String password = currentUser.getPassword();
-            if (username.equals(user.getUsername()) && bcryptEncoder.matches(user.getCurrentPassword(), password)) {
-                if (user.getNewPassword().equals(user.getConfirmNewPassword())) {
-                    User updatePassUser = userDao.findById(currentUser.getId()).get();
-                    updatePassUser.setPassword(bcryptEncoder.encode(user.getNewPassword()));
-                    userDao.save(updatePassUser);
-                    return updatePassUser;
-                }
-            }
-        }
-        return null;
-    }
+
 }

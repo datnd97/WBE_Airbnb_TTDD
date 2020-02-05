@@ -1,9 +1,14 @@
 package com.security.demospringsecurity.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.security.demospringsecurity.message.request.LoginForm;
 import com.security.demospringsecurity.message.request.UserForm;
 import com.security.demospringsecurity.message.response.JwtResponse;
+import com.security.demospringsecurity.message.response.ResponseMessage;
 import com.security.demospringsecurity.model.*;
+import com.security.demospringsecurity.repository.UserRepository;
 import com.security.demospringsecurity.security.jwt.JwtProvider;
 import com.security.demospringsecurity.security.service.UserPrinciple;
 import com.security.demospringsecurity.service.UserService;
@@ -20,9 +25,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.w3c.dom.ls.LSOutput;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,10 +39,16 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
+    private  UserRepository userDao;
+
+    @Autowired
     private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private BCryptPasswordEncoder bcryptEncoder;
 
     @Autowired
     private JwtProvider jwtTokenUtil;
@@ -81,22 +94,32 @@ public class UserController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         final String token = jwtTokenUtil.generateJwtToken(authentication);
-
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         GrantedAuthority roleName = null;
         if (authentication.getAuthorities().size() > 0) {
             roleName = authentication.getAuthorities().iterator().next();
         }
-        return ResponseEntity.ok(new AuthToken(userPrinciple.getId(),userPrinciple.getName(),token,roleName.getAuthority()));
+        return ResponseEntity.ok(new AuthToken(userPrinciple.getId(),userPrinciple.getName(),token,roleName.getAuthority(),userPrinciple.getUsername()));
     }
 
-    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    public User changepassword(@RequestBody UpdatePasswordDto user) {
-        return userService.updatePassword(user);
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePasswordRequestParam(@RequestBody UpdatePasswordDto user) throws IOException {
+        User currentUser = userDao.findByUsername(user.getUsername());
+        if (currentUser != null) {
+        String username = currentUser.getUsername();
+        String password = currentUser.getPassword();
+        if (username.equals(user.getUsername()) && bcryptEncoder.matches(user.getCurrentPassword(), password)) {
+            if (user.getNewPassword().equals(user.getConfirmNewPassword())) {
+                User updatePassUser = userDao.findById(currentUser.getId()).get();
+                updatePassUser.setPassword(bcryptEncoder.encode(user.getNewPassword()));
+                userDao.save(updatePassUser);
+                return new ResponseEntity<>(new ResponseMessage("Password changed succces ;)"), HttpStatus.ACCEPTED);
+            }
+        }
     }
-
+        return new ResponseEntity<>(new ResponseMessage("Wrong current password :("), HttpStatus.NOT_ACCEPTABLE);
+    }
 
 
     @PutMapping("/{id}")

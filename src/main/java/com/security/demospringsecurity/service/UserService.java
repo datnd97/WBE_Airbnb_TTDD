@@ -20,5 +20,4 @@ public interface UserService {
 
     List<Role> getRoles();
 
-    User updatePassword(UpdatePasswordDto user);
 }
